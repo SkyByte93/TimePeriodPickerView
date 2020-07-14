@@ -1,0 +1,655 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		367BA02524B3375600C7D7EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA02424B3375600C7D7EA /* AppDelegate.swift */; };
+		367BA02924B3375600C7D7EA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA02824B3375600C7D7EA /* ViewController.swift */; };
+		367BA02C24B3375600C7D7EA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 367BA02A24B3375600C7D7EA /* Main.storyboard */; };
+		367BA02E24B3375900C7D7EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 367BA02D24B3375900C7D7EA /* Assets.xcassets */; };
+		367BA03124B3375900C7D7EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 367BA02F24B3375900C7D7EA /* LaunchScreen.storyboard */; };
+		367BA03C24B3375A00C7D7EA /* CyclePickerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA03B24B3375A00C7D7EA /* CyclePickerViewTests.swift */; };
+		367BA04924B3378600C7D7EA /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA04624B3378600C7D7EA /* Extension+Date.swift */; };
+		367BA04A24B3378600C7D7EA /* DatePeriodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA04724B3378600C7D7EA /* DatePeriodPickerView.swift */; };
+		367BA05224B33DD300C7D7EA /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05124B33DD300C7D7EA /* UIColor.swift */; };
+		367BA05A24B33E9B00C7D7EA /* MonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */; };
+		367BA05C24B33EA900C7D7EA /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05B24B33EA900C7D7EA /* DayPickerView.swift */; };
+		367BA05E24B33EB300C7D7EA /* WeekPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */; };
+		3693AC6324BBEA7D00FB8E4C /* DatePeriodToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6224BBEA7D00FB8E4C /* DatePeriodToolView.swift */; };
+		3693AC6724BC0AE800FB8E4C /* DatePeriodProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6624BC0AE800FB8E4C /* DatePeriodProtocol.swift */; };
+		5A788938871354BB7AC5227D /* Pods_CyclePickerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89BA320AC242D39466FABB2 /* Pods_CyclePickerView.framework */; };
+		78E45AA95383654CA99EDB0E /* Pods_CyclePickerViewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0DF442F5BCD5654284F354B /* Pods_CyclePickerViewTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		367BA03824B3375A00C7D7EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 367BA01924B3375600C7D7EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 367BA02024B3375600C7D7EA;
+			remoteInfo = CyclePickerView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		000E4A28684283211172A35F /* Pods-CyclePickerViewTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerViewTests.release.xcconfig"; path = "Target Support Files/Pods-CyclePickerViewTests/Pods-CyclePickerViewTests.release.xcconfig"; sourceTree = "<group>"; };
+		367BA02124B3375600C7D7EA /* CyclePickerView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyclePickerView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		367BA02424B3375600C7D7EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		367BA02824B3375600C7D7EA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		367BA02B24B3375600C7D7EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		367BA02D24B3375900C7D7EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		367BA03024B3375900C7D7EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		367BA03224B3375900C7D7EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		367BA03724B3375A00C7D7EA /* CyclePickerViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CyclePickerViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		367BA03B24B3375A00C7D7EA /* CyclePickerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclePickerViewTests.swift; sourceTree = "<group>"; };
+		367BA03D24B3375A00C7D7EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		367BA04624B3378600C7D7EA /* Extension+Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
+		367BA04724B3378600C7D7EA /* DatePeriodPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePeriodPickerView.swift; sourceTree = "<group>"; };
+		367BA05124B33DD300C7D7EA /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthPickerView.swift; sourceTree = "<group>"; };
+		367BA05B24B33EA900C7D7EA /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
+		367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekPickerView.swift; sourceTree = "<group>"; };
+		3693AC6224BBEA7D00FB8E4C /* DatePeriodToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePeriodToolView.swift; sourceTree = "<group>"; };
+		3693AC6624BC0AE800FB8E4C /* DatePeriodProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePeriodProtocol.swift; sourceTree = "<group>"; };
+		9EA68A45D03D4CD226A1A0F6 /* Pods-CyclePickerView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerView.debug.xcconfig"; path = "Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView.debug.xcconfig"; sourceTree = "<group>"; };
+		B058D63754D4559E42D15311 /* Pods-CyclePickerViewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerViewTests.debug.xcconfig"; path = "Target Support Files/Pods-CyclePickerViewTests/Pods-CyclePickerViewTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B89BA320AC242D39466FABB2 /* Pods_CyclePickerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CyclePickerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0DF442F5BCD5654284F354B /* Pods_CyclePickerViewTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CyclePickerViewTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFAC0D37760561F70F800728 /* Pods-CyclePickerView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerView.release.xcconfig"; path = "Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		367BA01E24B3375600C7D7EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A788938871354BB7AC5227D /* Pods_CyclePickerView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		367BA03424B3375A00C7D7EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78E45AA95383654CA99EDB0E /* Pods_CyclePickerViewTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		367BA01824B3375600C7D7EA = {
+			isa = PBXGroup;
+			children = (
+				367BA04C24B3378E00C7D7EA /* PickerView */,
+				367BA02324B3375600C7D7EA /* CyclePickerView */,
+				367BA03A24B3375A00C7D7EA /* CyclePickerViewTests */,
+				367BA02224B3375600C7D7EA /* Products */,
+				DB5CE75ABA24B59AB7CAD377 /* Pods */,
+				F8971A417FBF103F487C30A5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		367BA02224B3375600C7D7EA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				367BA02124B3375600C7D7EA /* CyclePickerView.app */,
+				367BA03724B3375A00C7D7EA /* CyclePickerViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		367BA02324B3375600C7D7EA /* CyclePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				367BA02424B3375600C7D7EA /* AppDelegate.swift */,
+				367BA02824B3375600C7D7EA /* ViewController.swift */,
+				367BA02A24B3375600C7D7EA /* Main.storyboard */,
+				367BA02D24B3375900C7D7EA /* Assets.xcassets */,
+				367BA02F24B3375900C7D7EA /* LaunchScreen.storyboard */,
+				367BA03224B3375900C7D7EA /* Info.plist */,
+			);
+			path = CyclePickerView;
+			sourceTree = "<group>";
+		};
+		367BA03A24B3375A00C7D7EA /* CyclePickerViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				367BA03B24B3375A00C7D7EA /* CyclePickerViewTests.swift */,
+				367BA03D24B3375A00C7D7EA /* Info.plist */,
+			);
+			path = CyclePickerViewTests;
+			sourceTree = "<group>";
+		};
+		367BA04C24B3378E00C7D7EA /* PickerView */ = {
+			isa = PBXGroup;
+			children = (
+				3693AC6824BC0C1A00FB8E4C /* PickerView */,
+				367BA05524B33E4800C7D7EA /* Other */,
+				367BA04724B3378600C7D7EA /* DatePeriodPickerView.swift */,
+				3693AC6624BC0AE800FB8E4C /* DatePeriodProtocol.swift */,
+				3693AC6224BBEA7D00FB8E4C /* DatePeriodToolView.swift */,
+			);
+			path = PickerView;
+			sourceTree = "<group>";
+		};
+		367BA05524B33E4800C7D7EA /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				367BA04624B3378600C7D7EA /* Extension+Date.swift */,
+				367BA05124B33DD300C7D7EA /* UIColor.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		367BA05624B33E5600C7D7EA /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				367BA05B24B33EA900C7D7EA /* DayPickerView.swift */,
+			);
+			path = Day;
+			sourceTree = "<group>";
+		};
+		367BA05724B33E5D00C7D7EA /* Month */ = {
+			isa = PBXGroup;
+			children = (
+				367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */,
+			);
+			path = Month;
+			sourceTree = "<group>";
+		};
+		367BA05824B33E6B00C7D7EA /* Week */ = {
+			isa = PBXGroup;
+			children = (
+				367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */,
+			);
+			path = Week;
+			sourceTree = "<group>";
+		};
+		3693AC6824BC0C1A00FB8E4C /* PickerView */ = {
+			isa = PBXGroup;
+			children = (
+				367BA05824B33E6B00C7D7EA /* Week */,
+				367BA05724B33E5D00C7D7EA /* Month */,
+				367BA05624B33E5600C7D7EA /* Day */,
+			);
+			path = PickerView;
+			sourceTree = "<group>";
+		};
+		DB5CE75ABA24B59AB7CAD377 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9EA68A45D03D4CD226A1A0F6 /* Pods-CyclePickerView.debug.xcconfig */,
+				FFAC0D37760561F70F800728 /* Pods-CyclePickerView.release.xcconfig */,
+				B058D63754D4559E42D15311 /* Pods-CyclePickerViewTests.debug.xcconfig */,
+				000E4A28684283211172A35F /* Pods-CyclePickerViewTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F8971A417FBF103F487C30A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B89BA320AC242D39466FABB2 /* Pods_CyclePickerView.framework */,
+				F0DF442F5BCD5654284F354B /* Pods_CyclePickerViewTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		367BA02024B3375600C7D7EA /* CyclePickerView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 367BA04024B3375A00C7D7EA /* Build configuration list for PBXNativeTarget "CyclePickerView" */;
+			buildPhases = (
+				CA039765D11F964C6540439F /* [CP] Check Pods Manifest.lock */,
+				367BA01D24B3375600C7D7EA /* Sources */,
+				367BA01E24B3375600C7D7EA /* Frameworks */,
+				367BA01F24B3375600C7D7EA /* Resources */,
+				5BA34AF4305569D3C96B6965 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CyclePickerView;
+			productName = CyclePickerView;
+			productReference = 367BA02124B3375600C7D7EA /* CyclePickerView.app */;
+			productType = "com.apple.product-type.application";
+		};
+		367BA03624B3375A00C7D7EA /* CyclePickerViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 367BA04324B3375A00C7D7EA /* Build configuration list for PBXNativeTarget "CyclePickerViewTests" */;
+			buildPhases = (
+				78A00BEEC7EAB7F006C89838 /* [CP] Check Pods Manifest.lock */,
+				367BA03324B3375A00C7D7EA /* Sources */,
+				367BA03424B3375A00C7D7EA /* Frameworks */,
+				367BA03524B3375A00C7D7EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				367BA03924B3375A00C7D7EA /* PBXTargetDependency */,
+			);
+			name = CyclePickerViewTests;
+			productName = CyclePickerViewTests;
+			productReference = 367BA03724B3375A00C7D7EA /* CyclePickerViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		367BA01924B3375600C7D7EA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1150;
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = jetson;
+				TargetAttributes = {
+					367BA02024B3375600C7D7EA = {
+						CreatedOnToolsVersion = 11.5;
+					};
+					367BA03624B3375A00C7D7EA = {
+						CreatedOnToolsVersion = 11.5;
+						TestTargetID = 367BA02024B3375600C7D7EA;
+					};
+				};
+			};
+			buildConfigurationList = 367BA01C24B3375600C7D7EA /* Build configuration list for PBXProject "CyclePickerView" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 367BA01824B3375600C7D7EA;
+			productRefGroup = 367BA02224B3375600C7D7EA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				367BA02024B3375600C7D7EA /* CyclePickerView */,
+				367BA03624B3375A00C7D7EA /* CyclePickerViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		367BA01F24B3375600C7D7EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				367BA03124B3375900C7D7EA /* LaunchScreen.storyboard in Resources */,
+				367BA02E24B3375900C7D7EA /* Assets.xcassets in Resources */,
+				367BA02C24B3375600C7D7EA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		367BA03524B3375A00C7D7EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5BA34AF4305569D3C96B6965 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		78A00BEEC7EAB7F006C89838 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CyclePickerViewTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA039765D11F964C6540439F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CyclePickerView-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		367BA01D24B3375600C7D7EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				367BA02924B3375600C7D7EA /* ViewController.swift in Sources */,
+				3693AC6724BC0AE800FB8E4C /* DatePeriodProtocol.swift in Sources */,
+				367BA05C24B33EA900C7D7EA /* DayPickerView.swift in Sources */,
+				367BA04A24B3378600C7D7EA /* DatePeriodPickerView.swift in Sources */,
+				3693AC6324BBEA7D00FB8E4C /* DatePeriodToolView.swift in Sources */,
+				367BA05E24B33EB300C7D7EA /* WeekPickerView.swift in Sources */,
+				367BA04924B3378600C7D7EA /* Extension+Date.swift in Sources */,
+				367BA05224B33DD300C7D7EA /* UIColor.swift in Sources */,
+				367BA02524B3375600C7D7EA /* AppDelegate.swift in Sources */,
+				367BA05A24B33E9B00C7D7EA /* MonthPickerView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		367BA03324B3375A00C7D7EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				367BA03C24B3375A00C7D7EA /* CyclePickerViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		367BA03924B3375A00C7D7EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 367BA02024B3375600C7D7EA /* CyclePickerView */;
+			targetProxy = 367BA03824B3375A00C7D7EA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		367BA02A24B3375600C7D7EA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				367BA02B24B3375600C7D7EA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		367BA02F24B3375900C7D7EA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				367BA03024B3375900C7D7EA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		367BA03E24B3375A00C7D7EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		367BA03F24B3375A00C7D7EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		367BA04124B3375A00C7D7EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EA68A45D03D4CD226A1A0F6 /* Pods-CyclePickerView.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LAT575FSRT;
+				INFOPLIST_FILE = CyclePickerView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = skytech.CyclePickerView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		367BA04224B3375A00C7D7EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFAC0D37760561F70F800728 /* Pods-CyclePickerView.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LAT575FSRT;
+				INFOPLIST_FILE = CyclePickerView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = skytech.CyclePickerView;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		367BA04424B3375A00C7D7EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B058D63754D4559E42D15311 /* Pods-CyclePickerViewTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LAT575FSRT;
+				INFOPLIST_FILE = CyclePickerViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = skytech.CyclePickerViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CyclePickerView.app/CyclePickerView";
+			};
+			name = Debug;
+		};
+		367BA04524B3375A00C7D7EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 000E4A28684283211172A35F /* Pods-CyclePickerViewTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LAT575FSRT;
+				INFOPLIST_FILE = CyclePickerViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = skytech.CyclePickerViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CyclePickerView.app/CyclePickerView";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		367BA01C24B3375600C7D7EA /* Build configuration list for PBXProject "CyclePickerView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				367BA03E24B3375A00C7D7EA /* Debug */,
+				367BA03F24B3375A00C7D7EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		367BA04024B3375A00C7D7EA /* Build configuration list for PBXNativeTarget "CyclePickerView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				367BA04124B3375A00C7D7EA /* Debug */,
+				367BA04224B3375A00C7D7EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		367BA04324B3375A00C7D7EA /* Build configuration list for PBXNativeTarget "CyclePickerViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				367BA04424B3375A00C7D7EA /* Debug */,
+				367BA04524B3375A00C7D7EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 367BA01924B3375600C7D7EA /* Project object */;
+}
