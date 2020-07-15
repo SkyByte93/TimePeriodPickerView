@@ -14,30 +14,12 @@ let kScreenH = UIScreen.main.bounds.size.height
 import UIKit
 import DateToolsSwift
 
-enum CycleType {
-    
-    case DAY
-    
-    case WEEK
-    
-    case MONTH
-}
-
-class PickerViewModel {
-    var pickerView: UIPickerView!
-    init(picker: UIPickerView) {
-        pickerView = picker
-    }
-}
-
 /// (Int, Int, Int) (年，月，日)
 typealias PeriodDate = (Int, Int, Int)
 
 typealias DatePeriodConfirmBlock = ((_ type: CycleType,_ startTime: PeriodDate, _ endTime: PeriodDate)->())
 
 class DatePeriodPickerView: UIView {
-    ///
-    public weak var toolDelegate: DatePeriodToolDelegate?
     ///
     public weak var delegate: DatePeriodDataDelegate?
     
@@ -49,32 +31,35 @@ class DatePeriodPickerView: UIView {
         willSet { mainView.frame = newValue }
     }
     
-    /// 整体背景色
-    public var mainBackground: UIColor = UIColor(hex: "000000", alpha: 0.3) {
+    public var mainBackground: UIColor = .color(default: .white, darkMode: .black) {
+        willSet { mainView.backgroundColor = newValue }
+    }
+    
+    /// 遮罩层背景色
+    public var shadeBackground: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3) {
         willSet { backgroundColor = newValue }
     }
     
-    /// 工具栏背景色
-    public var toolViewBackground: UIColor = .white {
-        willSet { toolView.backgroundColor = newValue }
-    }
-    
-    /// 选中的PickerView
-    var selectedIndex: Int = 0 {
+    /// 选中的Index
+    public var selectedIndex: Int = 0 {
         willSet {
-            scroll.contentOffset = CGPoint(x: Int(kScreenW) * selectedIndex, y: 0)
+            scroll.contentOffset = CGPoint(x: Int(kScreenW) * newValue, y: 0)
             toolView.selectedIndex = newValue
         }
     }
     
-    fileprivate var toolView: DatePeriodToolView!
+    /// pickerView左右切换动画, 默认有.
+    public var scrollSwitchAnimation: Bool = true
     
-    private(set) var pickerArr = Array<UIPickerView>()
-    private(set) var type: CycleType = .WEEK
+    private var toolView: DatePeriodToolView!
+    
+    private(set) var pickerArr = Array<PickerViewModel>()
+    /// 当前选中的时间, 用于缓存
+    private var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))? = nil
     
     fileprivate lazy var mainView: UIView = {
         let view = UIView(frame: mainFrame)
-        view.backgroundColor = .lightGray
+        view.backgroundColor = mainBackground
         return view
     }()
     
@@ -88,7 +73,7 @@ class DatePeriodPickerView: UIView {
         let view = UIScrollView(frame: CGRect(x: 0, y: toolView.bounds.height, width: kScreenW, height: height))
         view.isPagingEnabled = true
         view.bounces = false
-        view.backgroundColor = .white
+        view.backgroundColor = mainBackground
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.delegate = self
@@ -100,12 +85,12 @@ class DatePeriodPickerView: UIView {
         return gesture
     }()
     
-    init(types: Array<CycleType>, frame: CGRect? = nil) {
+    init(types: Array<CycleType>, frame: CGRect? = nil, configuration toolConfigration: ToolViewConfiguration? = nil) {
         guard let frame = (frame == nil ? backgroundFrame : frame) else { super.init(frame: .zero); return }
         super.init(frame: frame)
         
-        backgroundColor = mainBackground
-        toolView = toolView(types: types)
+        backgroundColor = shadeBackground
+        toolView = toolView(types: types, config: toolConfigration)
         #warning("点击手势出现问题, 响应链出现问题, 后期优化")
 //        addGestureRecognizer(gesture)
         
@@ -119,19 +104,38 @@ class DatePeriodPickerView: UIView {
     }
     
     ///
-    func makePickerView(types: Array<CycleType>, pickerArr: inout Array<UIPickerView>) {
+    func makePickerView(types: Array<CycleType>, pickerArr: inout Array<PickerViewModel>) {
+        
         scroll.contentSize = CGSize(width: kScreenW * CGFloat(types.count), height: scroll.bounds.height)
         scroll.contentOffset = CGPoint(x: Int(kScreenW) * selectedIndex, y: 0)
+        
         for (index, item) in types.enumerated() {
-            let picker = UIPickerView()
-            picker.frame = CGRect(x: kScreenW * CGFloat(index), y: 0, width: scroll.bounds.width, height: scroll.bounds.height)
+            let frame = CGRect(x: kScreenW * CGFloat(index), y: 0, width: scroll.bounds.width, height: scroll.bounds.height)
             switch item {
-            case .DAY: picker.backgroundColor = .red
-            case .WEEK: picker.backgroundColor = .yellow
-            case .MONTH: picker.backgroundColor = .cyan
+            case .DAY:
+                pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(frame: frame)))
+            case .WEEK:
+                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame)))
+            case .MONTH:
+                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame)))
             }
-            pickerArr.append(picker)
         }
+    }
+    
+    func dayPickerView(frame: CGRect) -> DayPickerView {
+        let pickerView = DayPickerView.init(frame: frame)
+        return pickerView
+    }
+    
+    func weekPickerView(frame: CGRect) -> WeekPickerView {
+        let pickerView = WeekPickerView(frame: frame)
+        return pickerView
+    }
+    
+    func monthPickerView(frame: CGRect) -> MonthPickerView {
+        let pickerView = MonthPickerView(frame: frame)
+        pickerView.periodDelegate = self
+        return pickerView
     }
     
     ///
@@ -153,16 +157,15 @@ class DatePeriodPickerView: UIView {
     ///
     func pickerViewAddMainView() {
         for item in pickerArr {
-            self.scroll.addSubview(item)
+            scroll.addSubview(item.pickerView)
         }
     }
     
     ///
-    func toolView(types: Array<CycleType>) -> DatePeriodToolView {
-        let tool = DatePeriodToolView(types: types)
+    func toolView(types: Array<CycleType>, config: ToolViewConfiguration?) -> DatePeriodToolView {
+        let tool = DatePeriodToolView(types: types, config: config ?? ToolViewConfiguration())
         tool.delegate = self
         tool.selectedIndex = selectedIndex
-        tool.backgroundColor = toolViewBackground
         return tool
     }
     
@@ -194,23 +197,30 @@ class DatePeriodPickerView: UIView {
         isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.mainView.frame = self.mainFrame
-            self.backgroundColor = self.mainBackground
+            self.backgroundColor = self.shadeBackground
         }
     }
     
     /// 隐藏动画
     func animationedHiden() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
             self.backgroundColor = .clear
-        } completion: { (bool) in
+        }) { (bool) in
             #warning("在lazy加载一次后, 再次添加到view上, 由于DatePeriodPickerView被删除, 不能进行添加")
             self.removeFromSuperview()
         }
-
+    }
+    
+}
+extension DatePeriodPickerView: DatePeriodPickerViewDelegate {
+    func pickerView(pickerView: UIPickerView, type: CycleType, start: PeriodDate, end: PeriodDate) {
+        print("类型:\(type), 时间:\(start.0)年\(start.1)月\(start.2)日~\(end.0)年\(end.1)月\(end.2)日")
+        if let dele = delegate {
+            dele.selected(pickerView: self, type: type, start: start, end: end)
+        }
     }
 }
-
 extension DatePeriodPickerView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollOffsetX = scrollView.contentOffset.x
@@ -237,6 +247,13 @@ extension DatePeriodPickerView: ToolProtocol {
     
     func tool(selected type: CycleType, selected index: Int) {
         print("当前选中\(index), 类型是\(type)")
+        if scrollSwitchAnimation {
+            UIView.animate(withDuration: 0.3) { self.scrollOffSet(index) }
+        }else {
+            scrollOffSet(index)
+        }
+    }
+    func scrollOffSet(_ index: Int) {
         scroll.contentOffset = CGPoint(x: Int(scroll.bounds.width) * index, y: 0)
     }
 }
@@ -247,4 +264,18 @@ extension Int {
         if self < 10 { return "0\(self)" }
         return "\(self)"
     }
+}
+
+extension DatePeriodPickerView {
+    /// 计算天的日期
+//    func calculateDay() {
+//        if #available(iOS 13.4, *) {
+//            dayPickerView.preferredDatePickerStyle = .wheels
+//        }
+//        dayPickerView.datePickerMode = .date
+//        /// 最大日期为昨天
+//        dayPickerView.maximumDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+//        /// 最小日期为4个月前的今天
+//        dayPickerView.minimumDate = Calendar.current.date(byAdding: .month, value: -3, to: Date())
+//    }
 }
