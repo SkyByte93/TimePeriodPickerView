@@ -10,16 +10,23 @@ import Foundation
 import UIKit
 
 class MonthPickerView: UIPickerView {
-    private(set) var monthData = Array<(Int, Array<Int>)>()
-    fileprivate var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
+    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
     public var periodDelegate: DatePeriodPickerViewDelegate?
-    override init(frame: CGRect) {
+    private var monthData = Array<(Int, Array<Int>)>()
+    private(set) var config: PickerConfig = PickerConfig(type: .MONTH)
+    init(frame: CGRect, config: PickerConfig? = nil) {
         super.init(frame: frame)
+        if let config = config { self.config = config }
         delegate = self
         dataSource = self
+        currentDate()
         calculateMonth()
-        let month = Date().getLastMonthStartAndEnd()
-        currentPeriodDate = ((month.0!.year, month.0!.month, month.0!.day),(month.1!.year, month.1!.month, month.1!.day))
+    }
+    
+    func currentDate() {
+        let month = config.currentDate.getLastMonthStartAndEnd()
+        guard let start = month.0, let end = month.1 else { return }
+        currentPeriodDate = ((start.year, start.month, start.day),(end.year, end.month, end.day))
     }
     
     required init?(coder: NSCoder) {
@@ -43,9 +50,9 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         //设置分割线
         for view in pickerView.subviews where view.frame.size.height <= 1 {
-            view.isHidden = false
-            view.frame = CGRect(x: 0, y: view.frame.origin.y, width: UIScreen.main.bounds.size.width, height: 1)
-            view.backgroundColor = .white
+            view.isHidden = config.splitLimitHidden
+            view.frame = CGRect(x: 0, y: view.frame.origin.y, width: UIScreen.main.bounds.size.width, height: config.splitLimitHeight)
+            view.backgroundColor = config.splitLimitColor
         }
         // 修改字体样式
         var pickerLabel = view as? UILabel
@@ -53,8 +60,8 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
             pickerLabel = UILabel()
             pickerLabel?.textAlignment = .center
         }
-        pickerLabel?.font = UIFont.systemFont(ofSize: 18)
-        pickerLabel?.textColor = .red
+        pickerLabel?.font = config.selectFont
+        pickerLabel?.textColor = config.selectColor
         
         if component == 0 {
             pickerLabel?.text = "\(monthData[row].0)年"

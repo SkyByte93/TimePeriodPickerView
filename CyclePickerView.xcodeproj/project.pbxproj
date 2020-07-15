@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		364902AB24BED21800A5EC5B /* SKTimePeriodTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364902AA24BED21800A5EC5B /* SKTimePeriodTableView.swift */; };
+		364902AF24BED8B600A5EC5B /* DefaultStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364902AE24BED8B600A5EC5B /* DefaultStyleViewController.swift */; };
+		364902B124BED8C600A5EC5B /* DefaultFormatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364902B024BED8C600A5EC5B /* DefaultFormatViewController.swift */; };
 		367BA02524B3375600C7D7EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA02424B3375600C7D7EA /* AppDelegate.swift */; };
-		367BA02924B3375600C7D7EA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA02824B3375600C7D7EA /* ViewController.swift */; };
+		367BA02924B3375600C7D7EA /* PopupStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA02824B3375600C7D7EA /* PopupStyleViewController.swift */; };
 		367BA02E24B3375900C7D7EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 367BA02D24B3375900C7D7EA /* Assets.xcassets */; };
 		367BA03124B3375900C7D7EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 367BA02F24B3375900C7D7EA /* LaunchScreen.storyboard */; };
 		367BA03C24B3375A00C7D7EA /* CyclePickerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA03B24B3375A00C7D7EA /* CyclePickerViewTests.swift */; };
@@ -20,11 +23,13 @@
 		3693AC6324BBEA7D00FB8E4C /* DatePeriodToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6224BBEA7D00FB8E4C /* DatePeriodToolView.swift */; };
 		3693AC6724BC0AE800FB8E4C /* DatePeriodProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6624BC0AE800FB8E4C /* DatePeriodProtocol.swift */; };
 		3693AC6B24BD9BDB00FB8E4C /* SKTimePeriodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */; };
-		3693AC6D24BD9F5900FB8E4C /* YearType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6C24BD9F5900FB8E4C /* YearType.swift */; };
-		3693AC6F24BD9F6500FB8E4C /* WeekType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6E24BD9F6500FB8E4C /* WeekType.swift */; };
+		3693AC6D24BD9F5900FB8E4C /* PickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */; };
 		3693AC7124BDA22800FB8E4C /* SKTimePeriodAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7024BDA22800FB8E4C /* SKTimePeriodAnimation.swift */; };
 		3693AC7324BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7224BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift */; };
 		3693AC7524BDA7FE00FB8E4C /* ToolViewConfiguartion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7424BDA7FE00FB8E4C /* ToolViewConfiguartion.swift */; };
+		36A8F31D24BEDFCC00CE67B7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A8F31C24BEDFCC00CE67B7 /* BaseViewController.swift */; };
+		36A8F31F24BEE07300CE67B7 /* XIBStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A8F31E24BEE07300CE67B7 /* XIBStyleViewController.swift */; };
+		36A8F32124BEE07C00CE67B7 /* XIBStyleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36A8F32024BEE07C00CE67B7 /* XIBStyleViewController.xib */; };
 		5A788938871354BB7AC5227D /* Pods_CyclePickerView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B89BA320AC242D39466FABB2 /* Pods_CyclePickerView.framework */; };
 		78E45AA95383654CA99EDB0E /* Pods_CyclePickerViewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0DF442F5BCD5654284F354B /* Pods_CyclePickerViewTests.framework */; };
 /* End PBXBuildFile section */
@@ -41,9 +46,12 @@
 
 /* Begin PBXFileReference section */
 		000E4A28684283211172A35F /* Pods-CyclePickerViewTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerViewTests.release.xcconfig"; path = "Target Support Files/Pods-CyclePickerViewTests/Pods-CyclePickerViewTests.release.xcconfig"; sourceTree = "<group>"; };
+		364902AA24BED21800A5EC5B /* SKTimePeriodTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodTableView.swift; sourceTree = "<group>"; };
+		364902AE24BED8B600A5EC5B /* DefaultStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultStyleViewController.swift; sourceTree = "<group>"; };
+		364902B024BED8C600A5EC5B /* DefaultFormatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultFormatViewController.swift; sourceTree = "<group>"; };
 		367BA02124B3375600C7D7EA /* CyclePickerView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyclePickerView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		367BA02424B3375600C7D7EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		367BA02824B3375600C7D7EA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		367BA02824B3375600C7D7EA /* PopupStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupStyleViewController.swift; sourceTree = "<group>"; };
 		367BA02D24B3375900C7D7EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		367BA03024B3375900C7D7EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		367BA03224B3375900C7D7EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,11 +66,13 @@
 		3693AC6224BBEA7D00FB8E4C /* DatePeriodToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePeriodToolView.swift; sourceTree = "<group>"; };
 		3693AC6624BC0AE800FB8E4C /* DatePeriodProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePeriodProtocol.swift; sourceTree = "<group>"; };
 		3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodModel.swift; sourceTree = "<group>"; };
-		3693AC6C24BD9F5900FB8E4C /* YearType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearType.swift; sourceTree = "<group>"; };
-		3693AC6E24BD9F6500FB8E4C /* WeekType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekType.swift; sourceTree = "<group>"; };
+		3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerConfig.swift; sourceTree = "<group>"; };
 		3693AC7024BDA22800FB8E4C /* SKTimePeriodAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodAnimation.swift; sourceTree = "<group>"; };
 		3693AC7224BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodTypeEnum.swift; sourceTree = "<group>"; };
 		3693AC7424BDA7FE00FB8E4C /* ToolViewConfiguartion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolViewConfiguartion.swift; sourceTree = "<group>"; };
+		36A8F31C24BEDFCC00CE67B7 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		36A8F31E24BEE07300CE67B7 /* XIBStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XIBStyleViewController.swift; sourceTree = "<group>"; };
+		36A8F32024BEE07C00CE67B7 /* XIBStyleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XIBStyleViewController.xib; sourceTree = "<group>"; };
 		9EA68A45D03D4CD226A1A0F6 /* Pods-CyclePickerView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerView.debug.xcconfig"; path = "Target Support Files/Pods-CyclePickerView/Pods-CyclePickerView.debug.xcconfig"; sourceTree = "<group>"; };
 		B058D63754D4559E42D15311 /* Pods-CyclePickerViewTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CyclePickerViewTests.debug.xcconfig"; path = "Target Support Files/Pods-CyclePickerViewTests/Pods-CyclePickerViewTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B89BA320AC242D39466FABB2 /* Pods_CyclePickerView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CyclePickerView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +100,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		364902AC24BED85100A5EC5B /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				367BA02824B3375600C7D7EA /* PopupStyleViewController.swift */,
+				364902AE24BED8B600A5EC5B /* DefaultStyleViewController.swift */,
+				36A8F31E24BEE07300CE67B7 /* XIBStyleViewController.swift */,
+				36A8F32024BEE07C00CE67B7 /* XIBStyleViewController.xib */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		364902AD24BED86000A5EC5B /* Format */ = {
+			isa = PBXGroup;
+			children = (
+				364902B024BED8C600A5EC5B /* DefaultFormatViewController.swift */,
+			);
+			path = Format;
+			sourceTree = "<group>";
+		};
 		367BA01824B3375600C7D7EA = {
 			isa = PBXGroup;
 			children = (
@@ -114,8 +143,11 @@
 		367BA02324B3375600C7D7EA /* CyclePickerView */ = {
 			isa = PBXGroup;
 			children = (
+				36A8F31C24BEDFCC00CE67B7 /* BaseViewController.swift */,
+				364902AA24BED21800A5EC5B /* SKTimePeriodTableView.swift */,
+				364902AC24BED85100A5EC5B /* Style */,
+				364902AD24BED86000A5EC5B /* Format */,
 				367BA02424B3375600C7D7EA /* AppDelegate.swift */,
-				367BA02824B3375600C7D7EA /* ViewController.swift */,
 				367BA02D24B3375900C7D7EA /* Assets.xcassets */,
 				367BA02F24B3375900C7D7EA /* LaunchScreen.storyboard */,
 				367BA03224B3375900C7D7EA /* Info.plist */,
@@ -170,8 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */,
-				3693AC6C24BD9F5900FB8E4C /* YearType.swift */,
-				3693AC6E24BD9F6500FB8E4C /* WeekType.swift */,
+				3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				367BA03124B3375900C7D7EA /* LaunchScreen.storyboard in Resources */,
+				36A8F32124BEE07C00CE67B7 /* XIBStyleViewController.xib in Resources */,
 				367BA02E24B3375900C7D7EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,15 +395,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3693AC6D24BD9F5900FB8E4C /* YearType.swift in Sources */,
-				367BA02924B3375600C7D7EA /* ViewController.swift in Sources */,
+				364902AF24BED8B600A5EC5B /* DefaultStyleViewController.swift in Sources */,
+				364902AB24BED21800A5EC5B /* SKTimePeriodTableView.swift in Sources */,
+				3693AC6D24BD9F5900FB8E4C /* PickerConfig.swift in Sources */,
+				367BA02924B3375600C7D7EA /* PopupStyleViewController.swift in Sources */,
 				3693AC6724BC0AE800FB8E4C /* DatePeriodProtocol.swift in Sources */,
+				36A8F31D24BEDFCC00CE67B7 /* BaseViewController.swift in Sources */,
 				367BA05C24B33EA900C7D7EA /* DayPickerView.swift in Sources */,
+				36A8F31F24BEE07300CE67B7 /* XIBStyleViewController.swift in Sources */,
 				367BA04A24B3378600C7D7EA /* DatePeriodPickerView.swift in Sources */,
 				3693AC6324BBEA7D00FB8E4C /* DatePeriodToolView.swift in Sources */,
+				364902B124BED8C600A5EC5B /* DefaultFormatViewController.swift in Sources */,
 				367BA05E24B33EB300C7D7EA /* WeekPickerView.swift in Sources */,
 				3693AC7124BDA22800FB8E4C /* SKTimePeriodAnimation.swift in Sources */,
-				3693AC6F24BD9F6500FB8E4C /* WeekType.swift in Sources */,
 				367BA04924B3378600C7D7EA /* Extension+Date.swift in Sources */,
 				3693AC7324BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift in Sources */,
 				3693AC6B24BD9BDB00FB8E4C /* SKTimePeriodModel.swift in Sources */,

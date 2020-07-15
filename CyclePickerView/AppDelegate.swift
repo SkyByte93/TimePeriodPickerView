@@ -16,8 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .white
-        window?.rootViewController = ViewController()
+        window?.backgroundColor = .color(default: .white, darkMode: .black)
+        window?.rootViewController = UINavigationController(rootViewController: SKTimePeriodTableView())
         window?.makeKeyAndVisible()
         return true
     }

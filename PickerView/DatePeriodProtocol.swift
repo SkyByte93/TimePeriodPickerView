@@ -22,16 +22,24 @@ protocol DatePeriodPickerViewDelegate: NSObjectProtocol {
     ///
     func pickerView(pickerView: UIPickerView, type: CycleType, start: PeriodDate, end: PeriodDate)
 }
-extension DatePeriodPickerViewDelegate {
-    
-}
+extension DatePeriodPickerViewDelegate {}
 
 protocol DatePeriodDataDelegate: NSObjectProtocol {
     ///
-    func selected(pickerView: DatePeriodPickerView, type: CycleType, start: PeriodDate, end: PeriodDate)
-}
-extension DatePeriodDataDelegate {
+    func SKPeriod(periodView: DatePeriodPickerView, timeType: CycleType, start time: PeriodDate, end time: PeriodDate)
+    ///
+    func SKPeriod(periodView: DatePeriodPickerView, timeType: CycleType, start time: Date, end time: Date)
     
+    func SKPeriodLeftButton(periodView: DatePeriodPickerView, timeType: CycleType, start time: PeriodDate, end time: PeriodDate)
+    
+    func SKPeriodRightButton(periodView: DatePeriodPickerView, timeType: CycleType, start time: PeriodDate, end time: PeriodDate)
+}
+
+extension DatePeriodDataDelegate {
+    func SKPeriod(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {}
+    func SKPeriod(periodView: DatePeriodPickerView, timeType: CycleType, start: Date, end: Date) {}
+    func SKPeriodLeftButton(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {}
+    func SKPeriodRightButton(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {}
 }
 
 extension UIColor {

@@ -141,9 +141,11 @@ class DatePeriodToolView: UIView {
             let button = UIButton()
             button.addTarget(self, action: #selector(typesButton(_:)), for: .touchUpInside)
             switch item {
-            case .DAY: button.setTitle("天", for: .normal)
             case .MONTH: button.setTitle("月", for: .normal)
             case .WEEK: button.setTitle("周", for: .normal)
+            case .DAY: button.setTitle("天", for: .normal)
+            case .Hour: button.setTitle("小时", for: .normal)
+            case .Minute: button.setTitle("分", for: .normal)
             }
             
             array.append(DateTypeModel(isSelected: selectedIndex == index, index: index,type: item, button: button))

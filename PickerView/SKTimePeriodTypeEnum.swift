@@ -10,6 +10,10 @@ import Foundation
 
 enum CycleType {
     
+    case Minute
+    
+    case Hour
+    
     case DAY
     
     case WEEK

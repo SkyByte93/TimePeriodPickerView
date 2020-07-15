@@ -11,16 +11,23 @@ import UIKit
 import DateToolsSwift
 
 class WeekPickerView: UIPickerView {
-    public var weekData = Array<(Int, Array<((Int), (Int, Int, Int), (Int, Int, Int))>)>()
     public var periodDelegate: DatePeriodPickerViewDelegate?
-    fileprivate var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
-    override init(frame: CGRect) {
+    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
+    public var weekData = Array<(Int, Array<((Int), (Int, Int, Int), (Int, Int, Int))>)>()
+    private(set) var config: PickerConfig = PickerConfig(type: .WEEK)
+    init(frame: CGRect, config: PickerConfig? = nil) {
         super.init(frame: frame)
         delegate = self
         dataSource = self
+        if let config = config { self.config = config }
+        currentDate()
         calculateWeek()
-        let week = Date().getLastWeekMonthDayAndWeekDay()
-        currentPeriodDate = ((week.0!.year, week.0!.month, week.0!.day),(week.1!.year, week.1!.month, week.1!.day))
+    }
+    
+    func currentDate() {
+        let week = config.currentDate.getLastWeekMonthDayAndWeekDay()
+        guard let start = week.0, let end = week.1 else { return }
+        currentPeriodDate = ((start.year, start.month, start.day),(end.year, end.month, end.day))
     }
     
     required init?(coder: NSCoder) {
@@ -44,9 +51,9 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         //设置分割线
         for view in pickerView.subviews where view.frame.size.height <= 1 {
-            view.isHidden = false
-            view.frame = CGRect(x: 0, y: view.frame.origin.y, width: UIScreen.main.bounds.size.width, height: 1)
-            view.backgroundColor = .white
+            view.isHidden = config.splitLimitHidden
+            view.frame = CGRect(x: 0, y: view.frame.origin.y, width: UIScreen.main.bounds.size.width, height: config.splitLimitHeight)
+            view.backgroundColor = config.splitLimitColor
         }
         // 修改字体样式
         var pickerLabel = view as? UILabel
@@ -54,8 +61,8 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
             pickerLabel = UILabel()
             pickerLabel?.textAlignment = .center
         }
-        pickerLabel?.font = UIFont.systemFont(ofSize: 18)
-        pickerLabel?.textColor = .red
+        pickerLabel?.font = config.selectFont
+        pickerLabel?.textColor = config.selectColor
         
         if component == 0 {
             pickerLabel?.text = "\(weekData[row].0)年"
@@ -79,6 +86,10 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
                 let weekDate = weekData[year].1[selectedRow(inComponent: 1)]
                 currentPeriodDate = ((weekDate.1.0, weekDate.1.1, weekDate.1.2),(weekDate.2.0, weekDate.2.1, weekDate.2.2))
             }
+        }
+        
+        if let delegate = periodDelegate {
+            delegate.pickerView(pickerView: self, type: .WEEK, start: currentPeriodDate.0, end: currentPeriodDate.1)
         }
     }
     

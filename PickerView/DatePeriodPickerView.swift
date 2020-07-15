@@ -34,12 +34,10 @@ class DatePeriodPickerView: UIView {
     public var mainBackground: UIColor = .color(default: .white, darkMode: .black) {
         willSet { mainView.backgroundColor = newValue }
     }
-    
     /// 遮罩层背景色
     public var shadeBackground: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3) {
         willSet { backgroundColor = newValue }
     }
-    
     /// 选中的Index
     public var selectedIndex: Int = 0 {
         willSet {
@@ -47,15 +45,23 @@ class DatePeriodPickerView: UIView {
             toolView.selectedIndex = newValue
         }
     }
-    
-    /// pickerView左右切换动画, 默认有.
+    /// 是否定位到上次选中时间的位置
+    public var autoLocationDate: Bool = false {
+        willSet {}
+    }
+    /// 选择器左右切换动画, 默认有.
     public var scrollSwitchAnimation: Bool = true
+    /// 是否适配暗黑模式, 默认是
+    public var isAdaptiveDrakMode: Bool = true
     
-    private var toolView: DatePeriodToolView!
-    
-    private(set) var pickerArr = Array<PickerViewModel>()
     /// 当前选中的时间, 用于缓存
-    private var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))? = nil
+    private(set) var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))? = nil
+    ///
+    private(set) var toolView: DatePeriodToolView!
+    ///
+    private var pickerArr = Array<PickerViewModel>()
+    ///
+    private var currentType: CycleType? = nil
     
     fileprivate lazy var mainView: UIView = {
         let view = UIView(frame: mainFrame)
@@ -85,7 +91,7 @@ class DatePeriodPickerView: UIView {
         return gesture
     }()
     
-    init(types: Array<CycleType>, frame: CGRect? = nil, configuration toolConfigration: ToolViewConfiguration? = nil) {
+    init(types: Array<CycleType>, frame: CGRect? = nil, configuration toolConfigration: ToolViewConfiguration? = nil, configuration pickerConfiguration: Array<PickerConfig>? = nil) {
         guard let frame = (frame == nil ? backgroundFrame : frame) else { super.init(frame: .zero); return }
         super.init(frame: frame)
         
@@ -99,25 +105,28 @@ class DatePeriodPickerView: UIView {
         mainView.addSubview(scroll)
         
         ///
-        makePickerView(types: types, pickerArr: &pickerArr)
+        makePickerView(types: types, pickerArr: &pickerArr, config: pickerConfiguration)
         pickerViewAddMainView()
     }
     
     ///
-    func makePickerView(types: Array<CycleType>, pickerArr: inout Array<PickerViewModel>) {
+    func makePickerView(types: Array<CycleType>, pickerArr: inout Array<PickerViewModel>, config: Array<PickerConfig>?) {
         
         scroll.contentSize = CGSize(width: kScreenW * CGFloat(types.count), height: scroll.bounds.height)
         scroll.contentOffset = CGPoint(x: Int(kScreenW) * selectedIndex, y: 0)
         
         for (index, item) in types.enumerated() {
             let frame = CGRect(x: kScreenW * CGFloat(index), y: 0, width: scroll.bounds.width, height: scroll.bounds.height)
+            let config = config == nil ? nil : config![index]
             switch item {
             case .DAY:
                 pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(frame: frame)))
             case .WEEK:
-                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame)))
+                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame, config: config)))
             case .MONTH:
-                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame)))
+                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame, config: config)))
+            case .Minute: break
+            case .Hour: break
             }
         }
     }
@@ -127,13 +136,14 @@ class DatePeriodPickerView: UIView {
         return pickerView
     }
     
-    func weekPickerView(frame: CGRect) -> WeekPickerView {
-        let pickerView = WeekPickerView(frame: frame)
+    func weekPickerView(frame: CGRect, config: PickerConfig?) -> WeekPickerView {
+        let pickerView = WeekPickerView(frame: frame, config: config)
+        pickerView.periodDelegate = self
         return pickerView
     }
     
-    func monthPickerView(frame: CGRect) -> MonthPickerView {
-        let pickerView = MonthPickerView(frame: frame)
+    func monthPickerView(frame: CGRect, config: PickerConfig?) -> MonthPickerView {
+        let pickerView = MonthPickerView(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
@@ -207,46 +217,62 @@ class DatePeriodPickerView: UIView {
             self.mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
             self.backgroundColor = .clear
         }) { (bool) in
-            #warning("在lazy加载一次后, 再次添加到view上, 由于DatePeriodPickerView被删除, 不能进行添加")
+            #warning("在lazy加载一次后, 再次添加到view上, 由于DatePeriodPickerView被删除, 不能进行添加, 后期优化")
             self.removeFromSuperview()
+        }
+    }
+    
+    func changeCurrentTime(index: Int) {
+        guard index >= 0 && index < pickerArr.count  else { return }
+        let model = pickerArr[index]
+        if model.type == .DAY, let _ = model.pickerView as? DayPickerView {
+        }else if model.type == .WEEK, let picker = model.pickerView as? WeekPickerView {
+            currentPeriodDate = picker.currentPeriodDate
+        }else if model.type == .MONTH, let picker = model.pickerView as? MonthPickerView {
+            currentPeriodDate = picker.currentPeriodDate
+        }
+        if let delegate = delegate, let date = currentPeriodDate {
+            delegate.SKPeriod(periodView: self, timeType: model.type, start: date.0, end: date.1)
         }
     }
     
 }
 extension DatePeriodPickerView: DatePeriodPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, type: CycleType, start: PeriodDate, end: PeriodDate) {
-        print("类型:\(type), 时间:\(start.0)年\(start.1)月\(start.2)日~\(end.0)年\(end.1)月\(end.2)日")
-        if let dele = delegate {
-            dele.selected(pickerView: self, type: type, start: start, end: end)
+//        print("type:\(type), date:\(start.0)Y\(start.1)M\(start.2)th~\(end.0)Y\(end.1)M\(end.2)th")
+        currentPeriodDate = (start, end)
+        if let delegate = delegate {
+            delegate.SKPeriod(periodView: self, timeType: type, start: start, end: end)
         }
     }
 }
 extension DatePeriodPickerView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scrollOffsetX = scrollView.contentOffset.x
-        let scrollViewWidth = scroll.bounds.width
-        
-        let index = ((scrollOffsetX) / scrollViewWidth)
-        let remainder = index.truncatingRemainder(dividingBy: 1.0)
+        let index = (scrollView.contentOffset.x / scroll.bounds.width)
         let intIndex = round(index)
-        print("当前ScrollView Index:\(intIndex), Index: \(remainder)")
+        
         toolView.animationChnage(index: Int(intIndex))
+        changeCurrentTime(index: Int(intIndex))
     }
     
 }
 
 extension DatePeriodPickerView: ToolProtocol {
     func tool(left leftBtn: UIButton?, right rightBtn: UIButton?) {
-        if let leftB = leftBtn {
-            print(leftB.titleLabel?.text ?? "左边")
-        } else if let rightB = rightBtn {
-            print(rightB.titleLabel?.text ?? "右边")
+        if leftBtn != nil {
+            if let delegate = delegate, let date = currentPeriodDate {
+                delegate.SKPeriodLeftButton(periodView: self, timeType: .MONTH, start: date.0, end: date.1)
+            }
+        } else if rightBtn != nil {
+            if let delegate = delegate, let date = currentPeriodDate {
+                delegate.SKPeriodRightButton(periodView: self, timeType: .MONTH, start: date.0, end: date.1)
+            }
         }
         animationedHiden()
     }
     
     func tool(selected type: CycleType, selected index: Int) {
-        print("当前选中\(index), 类型是\(type)")
+//        print("current index:\(index), type:\(type)")
         if scrollSwitchAnimation {
             UIView.animate(withDuration: 0.3) { self.scrollOffSet(index) }
         }else {
@@ -264,18 +290,4 @@ extension Int {
         if self < 10 { return "0\(self)" }
         return "\(self)"
     }
-}
-
-extension DatePeriodPickerView {
-    /// 计算天的日期
-//    func calculateDay() {
-//        if #available(iOS 13.4, *) {
-//            dayPickerView.preferredDatePickerStyle = .wheels
-//        }
-//        dayPickerView.datePickerMode = .date
-//        /// 最大日期为昨天
-//        dayPickerView.maximumDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())
-//        /// 最小日期为4个月前的今天
-//        dayPickerView.minimumDate = Calendar.current.date(byAdding: .month, value: -3, to: Date())
-//    }
 }

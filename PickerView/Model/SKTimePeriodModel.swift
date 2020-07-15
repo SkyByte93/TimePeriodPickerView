@@ -12,8 +12,10 @@ import UIKit
 public class PickerViewModel {
     var type: CycleType!
     var pickerView: UIPickerView!
+    
     init(type: CycleType ,picker: UIPickerView) {
         pickerView = picker
+        self.type = type
     }
 }
 
