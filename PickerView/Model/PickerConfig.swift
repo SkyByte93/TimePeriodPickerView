@@ -9,17 +9,15 @@
 import Foundation
 import UIKit
 
-class PickerConfig {
+class SKPickerConfig {
     /// 月周期格式
     var month: MonthFormat?
     /// 周周期格式
     var week: WeekFormat?
-    /// 当前时间
-    var currentDate: Date = Date()
-    /// 自动确定到当前时间
-    var autoLocationCurrentDate: Bool = true
+    /// 自动选中当前日期, 默认当前日期, nil时不自动选中
+    var selecteDate: Date? = Date()
     /// 时间范围
-    var timeLimit: (Date, Date)?
+    var timeLimit: (Date, Date)!
     
     var selectColor: UIColor = .color(default: .red, darkMode: .red)
     
@@ -28,6 +26,9 @@ class PickerConfig {
     var normalColor: UIColor = .color(default: .white, darkMode: .white)
     
     var normalFont: UIFont = .systemFont(ofSize: 18)
+    /// 是否是正序
+    var isSort: Bool = false
+    
     /// iOS13.0及以下有效
     var splitLimitColor: UIColor = .color(default: .lightGray, darkMode: .lightGray)
     /// iOS13.0及以下有效
@@ -35,13 +36,17 @@ class PickerConfig {
     /// iOS13.0及以下有效
     var splitLimitHidden: Bool = true
     
-    init(type: CycleType) {
+    /// 显示顺序
+    var order: SKPeriodOrder = .ACE
+    
+    init(type: SKPeriodType) {
         switch type {
         case .DAY: break
         case .WEEK: week = WeekFormat()
         case .MONTH: month = MonthFormat()
-        case .Minute: break
-        case .Hour: break
+        case .MINUTE: break
+        case .HOUR: break
+        case .SECOND: break
         }
     }
     init() {}

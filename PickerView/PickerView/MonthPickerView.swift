@@ -10,11 +10,15 @@ import Foundation
 import UIKit
 
 class MonthPickerView: UIPickerView {
-    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
-    public var periodDelegate: DatePeriodPickerViewDelegate?
+    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int)) = ((0, 0, 0),(0, 0, 0))
+    public var periodDelegate: SKDatePeriodPickerViewDelegate?
     private var monthData = Array<(Int, Array<Int>)>()
-    private(set) var config: PickerConfig = PickerConfig(type: .MONTH)
-    init(frame: CGRect, config: PickerConfig? = nil) {
+    private(set) var config: SKPickerConfig = SKPickerConfig(type: .MONTH)
+    private(set) var startTime: Date!
+    private(set) var endTime: Date!
+    
+    
+    init(frame: CGRect, config: SKPickerConfig? = nil) {
         super.init(frame: frame)
         if let config = config { self.config = config }
         delegate = self
@@ -24,7 +28,8 @@ class MonthPickerView: UIPickerView {
     }
     
     func currentDate() {
-        let month = config.currentDate.getLastMonthStartAndEnd()
+        guard let selecte = config.selecteDate else { return }
+        let month = selecte.getLastMonthStartAndEnd()
         guard let start = month.0, let end = month.1 else { return }
         currentPeriodDate = ((start.year, start.month, start.day),(end.year, end.month, end.day))
     }
@@ -109,7 +114,7 @@ extension MonthPickerView {
         var year: Int = Date().year
         var month: Array<Int> = Array()
         DispatchQueue(label: "background", qos: .background).async {
-            let excursion = Date.isToadyisMonthFirst() ? 1 : 0
+            let excursion = Date.isTodayisMonthFirst() ? 1 : 0
             let index = 3
             for i in (0 + excursion) ... (index + excursion) {
                 let currentDate = Calendar.current.date(byAdding: .month, value: -i, to: currentDate)

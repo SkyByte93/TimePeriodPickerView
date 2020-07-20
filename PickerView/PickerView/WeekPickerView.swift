@@ -8,14 +8,13 @@
 
 import Foundation
 import UIKit
-import DateToolsSwift
 
 class WeekPickerView: UIPickerView {
-    public var periodDelegate: DatePeriodPickerViewDelegate?
-    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))!
+    public var periodDelegate: SKDatePeriodPickerViewDelegate?
+    var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int)) = ((0, 0, 0),(0, 0, 0))
     public var weekData = Array<(Int, Array<((Int), (Int, Int, Int), (Int, Int, Int))>)>()
-    private(set) var config: PickerConfig = PickerConfig(type: .WEEK)
-    init(frame: CGRect, config: PickerConfig? = nil) {
+    private(set) var config: SKPickerConfig = SKPickerConfig(type: .WEEK)
+    init(frame: CGRect, config: SKPickerConfig? = nil) {
         super.init(frame: frame)
         delegate = self
         dataSource = self
@@ -25,7 +24,8 @@ class WeekPickerView: UIPickerView {
     }
     
     func currentDate() {
-        let week = config.currentDate.getLastWeekMonthDayAndWeekDay()
+        guard let selecte = config.selecteDate else { return }
+        let week = selecte.getLastWeekMonthDayAndWeekDay()
         guard let start = week.0, let end = week.1 else { return }
         currentPeriodDate = ((start.year, start.month, start.day),(end.year, end.month, end.day))
     }

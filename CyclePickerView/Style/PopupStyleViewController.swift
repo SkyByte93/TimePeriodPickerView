@@ -12,73 +12,43 @@ class PopupStyleViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "PopupStyleViewController"
-        addConstaint()
         
+        addShowButton()
+        addShowTimeLabel()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.showPickerView(UIButton())
         }
     }
     
-    lazy var time: UILabel = {
-        let text = UILabel()
-        text.textAlignment = .center
-        text.numberOfLines = 0
-        text.textColor = .color(default: .black, darkMode: .white)
-        text.font = .systemFont(ofSize: 20)
-        return text
-    }()
-    
-    lazy var button: UIButton = {
-        let button = UIButton()
-        button.setTitle("Show", for: .normal)
-        button.setTitleColor(.color(default: .black, darkMode: .white), for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button.addTarget(self, action: #selector(showPickerView(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc func showPickerView(_ sender: UIButton) {
-        let configuation = ToolViewConfiguration()
-        configuation.isExchangeToolButton = false
+    override func showPickerView(_ sender: UIButton) {
+        let configuation = SKToolViewConfiguration()
         
-        let config = PickerConfig()
+        let config = SKPickerConfig()
         config.splitLimitHidden = false
+        let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 3))
+        let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 3))
+        config.timeLimit = (start, end)
         let pickerConfiguration = [config, config, config]
-        let picker = DatePeriodPickerView.init(types: [.MONTH, .WEEK, .DAY], configuration: configuation, configuration: pickerConfiguration)
+        
+        let picker = SKDatePeriodPickerView.init(types: [.MONTH, .WEEK, .DAY], configuration: configuation, configuration: pickerConfiguration)
+        picker.selectedIndex = 1
         picker.delegate = self
+        picker.locale = Locale(identifier: "CTS")
         
         UIApplication.shared.keyWindow?.addSubview(picker)
     }
 }
 
-extension PopupStyleViewController: DatePeriodDataDelegate {
-    func SKPeriod(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {
-        time.text = "\(start.0)年\(start.1)月\(start.2)日~\(end.0)年\(end.1)月\(end.2)日 \n 时间类型:\(timeType)"
+extension PopupStyleViewController: SKDatePeriodDateDelegate {
+    func SKPeriod(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
+        set(time: "\(start.0)年\(start.1)月\(start.2)日~\(end.0)年\(end.1)月\(end.2)日 \n 时间类型:\(timeType)")
     }
     
-    func SKPeriodLeftButton(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {
+    func SKPeriodLeftButton(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
         print("左边按钮")
     }
     
-    func SKPeriodRightButton(periodView: DatePeriodPickerView, timeType: CycleType, start: PeriodDate, end: PeriodDate) {
+    func SKPeriodRightButton(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
         print("右边按钮")
-    }
-}
-
-extension PopupStyleViewController {
-    func addConstaint() {
-        
-        time.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(time)
-        view.addConstraints([NSLayoutConstraint(item: time, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0),
-                             NSLayoutConstraint(item: time, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: -100),
-                             NSLayoutConstraint(item: time, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0),
-                             NSLayoutConstraint(item: time, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        view.addConstraints([NSLayoutConstraint(item: button, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0),
-                             NSLayoutConstraint(item: button, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0)])
     }
 }

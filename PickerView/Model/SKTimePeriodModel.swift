@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 public class PickerViewModel {
-    var type: CycleType!
+    var type: SKPeriodType!
     var pickerView: UIPickerView!
     
-    init(type: CycleType ,picker: UIPickerView) {
+    init(type: SKPeriodType ,picker: UIPickerView) {
         pickerView = picker
         self.type = type
     }
@@ -26,9 +26,9 @@ class DateTypeModel: Equatable {
     
     var isSelected: Bool!
     var index: Int!
-    var type: CycleType!
+    var type: SKPeriodType!
     var button: UIButton!
-    init(isSelected: Bool,index: Int,type: CycleType,button: UIButton) {
+    init(isSelected: Bool,index: Int,type: SKPeriodType,button: UIButton) {
         self.isSelected = isSelected
         self.index = index
         self.type = type

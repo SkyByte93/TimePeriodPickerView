@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import PhotosUI
 
 class XIBStyleViewController: BaseViewController {
     @IBOutlet weak var add: UIButton!
     @IBOutlet weak var remove: UIButton!
     @IBOutlet weak var segment: UISegmentedControl!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
+    
+    
 }

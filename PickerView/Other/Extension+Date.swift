@@ -9,6 +9,28 @@
 import UIKit
 
 extension Date {
+    
+    //本年开始日期
+    static func startOf(year: Int) -> Date {
+        let date = Date(year: year, month: 1, day: 2)
+        let calendar = NSCalendar.current
+        let components = calendar.dateComponents(Set<Calendar.Component>([.year]), from: date)
+        let startOfYear = calendar.date(from: components)!
+        return startOfYear
+    }
+    
+    //本年结束日期
+    static func endOf(year: Int) -> Date {
+        let date = Date(year: year, month: 1, day: 2)
+        let calendar = NSCalendar.current
+        var components = calendar.dateComponents(Set<Calendar.Component>([.year]), from: date)
+        components.year = 1
+        components.day = -1
+        
+        let endOfYear = calendar.date(byAdding: components, to: startOf(year: year))!
+        return endOfYear
+    }
+    
     //上月开始日期
     func startOfLastMonth() -> Date {
         let calendar = NSCalendar.current
@@ -17,7 +39,6 @@ extension Date {
         let startOfMonth = calendar.date(from: components)!
         return startOfMonth
     }
-    
     // 上月结束日期
     func endOfLastMonth() -> Date {
         var components = DateComponents()
@@ -33,7 +54,23 @@ extension Date {
         let startOfMonth = calendar.date(from: components)!
         return startOfMonth
     }
-    
+    // 获取任意月的天数
+    func monthOfDays() -> Int {
+        switch month {
+        case 1, 3, 5, 7, 8, 10, 12:
+            return 31
+        case 4, 6, 9, 11:
+            return 30
+        case 2:
+            let isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+            return isLeapYear ? 29 : 28
+        default: fatalError("非法的月份:\(month)")
+        }
+    }
+    // 获取任意年的天数
+    func yearOfMonths() -> Int {
+        return 12
+    }
     /// 当前时间
     func currentDate(format: String) -> String {
         let dateformatter = DateFormatter()
@@ -41,7 +78,6 @@ extension Date {
         let time = dateformatter.string(from: Date())
         return time
     }
-    
     // 本月结束日期
     func endOfCurrentMonth() -> Date {
         var components = DateComponents()
@@ -50,7 +86,6 @@ extension Date {
         let endOfMonth =  NSCalendar.current.date(byAdding: components, to: startOfCurrentMonth())!
         return endOfMonth
     }
-    
     // 获取今天所在的周一
     func weekMonday(date: Date) -> Date {
         let calendar = Calendar.current
@@ -98,7 +133,7 @@ extension Date {
     /// 获取开始第一天和最后一天
     /// - Parameter filtrateFirstEqualToday: 过滤第一天等于今天
     func getLastMonthStartAndEnd(filtrate firstEqualToday: Bool = true) -> (Date?, Date?) {
-        if firstEqualToday && !Date.isToadyisMonthFirst() {
+        if firstEqualToday && !Date.isTodayisMonthFirst() {
             return (Date().startOfCurrentMonth(), Date().endOfCurrentMonth())
         }
         return (Date().startOfLastMonth(), Date().endOfLastMonth())
@@ -112,7 +147,7 @@ extension Date {
     }
     
     /// 今天是否是这个月开始第一天
-    static func isToadyisMonthFirst() -> Bool {
+    static func isTodayisMonthFirst() -> Bool {
         let components = NSCalendar.current.dateComponents([.day], from: Date())
         return ((components.day ?? 1) == 1) ? true : false
     }
