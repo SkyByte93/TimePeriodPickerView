@@ -54,4 +54,5 @@ class BaseViewController: UIViewController {
                              NSLayoutConstraint(item: time, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0),
                              NSLayoutConstraint(item: time, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0)])
     }
+    
 }

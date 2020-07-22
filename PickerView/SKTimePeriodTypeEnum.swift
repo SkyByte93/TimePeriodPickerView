@@ -29,3 +29,37 @@ enum SKPeriodOrder {
     /// 倒序
     case BCE
 }
+/// 显示模式
+enum SKShowMode {
+    /// 后缀
+    case suffix
+    /// 固定
+    case fixed
+}
+
+enum YearMode {
+    ///
+    case yyyy
+    ///
+    case yy
+    ///
+    case YYYY
+}
+
+enum DayMode {
+    ///
+    case dd
+    ///
+    case DD
+    ///
+    case d
+}
+
+enum MonthMode {
+    ///
+    case MM
+    ///
+    case mm
+    ///
+    case m
+}

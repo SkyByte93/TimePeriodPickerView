@@ -55,7 +55,7 @@ class SKToolViewConfiguration: NSObject {
     ///
     public var selecteTimeColor: UIColor = .color(default: .darkGray, darkMode: .darkGray)
     
-    public var selecteTimeFormat: String = "YYYY-DD-MM"
+    public var selecteTimeFormat: String = "yyyy-MM-dd"
     
     public var startingTimeAndEndingTime: String = "~"
     

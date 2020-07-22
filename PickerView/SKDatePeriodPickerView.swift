@@ -111,7 +111,7 @@ class SKDatePeriodPickerView: UIView {
     public init(types: Array<SKPeriodType>,
                 frame: CGRect? = nil,
                 configuration toolConfigration: SKToolViewConfiguration? = nil,
-                configuration pickerConfiguration: Array<SKPickerConfig>? = nil) {
+                configuration pickerConfiguration: Array<SKPickerConfiguration>? = nil) {
         
         guard let frame = (frame == nil ? backgroundFrame : frame) else { super.init(frame: .zero); return }
         super.init(frame: frame)
@@ -130,7 +130,7 @@ class SKDatePeriodPickerView: UIView {
     }
     
     ///
-    func makePickerView(types: Array<SKPeriodType>, pickerArr: inout Array<PickerViewModel>, config: Array<SKPickerConfig>?) {
+    func makePickerView(types: Array<SKPeriodType>, pickerArr: inout Array<PickerViewModel>, config: Array<SKPickerConfiguration>?) {
         scroll.contentSize = CGSize(width: kScreenW * CGFloat(types.count), height: scroll.bounds.height)
         scroll.contentOffset = CGPoint(x: Int(kScreenW) * selectedIndex, y: 0)
         
@@ -148,19 +148,19 @@ class SKDatePeriodPickerView: UIView {
         }
     }
     
-    func dayPickerView(frame: CGRect, config: SKPickerConfig?) -> DayPickerView {
+    func dayPickerView(frame: CGRect, config: SKPickerConfiguration?) -> DayPickerView {
         let pickerView = DayPickerView.init(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
-    func weekPickerView(frame: CGRect, config: SKPickerConfig?) -> WeekPickerView {
+    func weekPickerView(frame: CGRect, config: SKPickerConfiguration?) -> WeekPickerView {
         let pickerView = WeekPickerView(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
-    func monthPickerView(frame: CGRect, config: SKPickerConfig?) -> MonthPickerView {
+    func monthPickerView(frame: CGRect, config: SKPickerConfiguration?) -> MonthPickerView {
         let pickerView = MonthPickerView(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
@@ -251,12 +251,10 @@ class SKDatePeriodPickerView: UIView {
     func changeCurrentTime(index: Int) {
         guard index >= 0 && index < pickerArr.count  else { return }
         let model = pickerArr[index]
-        if model.type == .DAY, let picker = model.pickerView as? DayPickerView {
-            currentPeriodDate = picker.currentPeriodDate
-        }else if model.type == .WEEK, let picker = model.pickerView as? WeekPickerView {
-            currentPeriodDate = picker.currentPeriodDate
-        }else if model.type == .MONTH, let picker = model.pickerView as? MonthPickerView {
-            currentPeriodDate = picker.currentPeriodDate
+        if let picker = model.pickerView as? BasePickerView {
+            let start: (Int, Int, Int) = (picker.currentPeriod.0.year, picker.currentPeriod.0.month, picker.currentPeriod.0.day)
+            let end: (Int, Int, Int) = (picker.currentPeriod.1.year, picker.currentPeriod.1.month, picker.currentPeriod.1.day)
+            currentPeriodDate = (start, end)
         }
         if let delegate = delegate, let date = currentPeriodDate {
             delegate.SKPeriod(periodView: self, timeType: model.type, start: date.0, end: date.1)
