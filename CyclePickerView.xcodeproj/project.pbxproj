@@ -29,6 +29,7 @@
 		3693AC7524BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7424BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift */; };
 		3696ED8E24C5680D00C24F54 /* SKSingleDateToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3696ED8D24C5680D00C24F54 /* SKSingleDateToolView.swift */; };
 		3696ED9024C5684E00C24F54 /* SKToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3696ED8F24C5684E00C24F54 /* SKToolView.swift */; };
+		36A7878924C6730400F225A8 /* BasePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A7878824C6730400F225A8 /* BasePickerView.swift */; };
 		36A8F31D24BEDFCC00CE67B7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A8F31C24BEDFCC00CE67B7 /* BaseViewController.swift */; };
 		36A8F31F24BEE07300CE67B7 /* XIBStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A8F31E24BEE07300CE67B7 /* XIBStyleViewController.swift */; };
 		36A8F32124BEE07C00CE67B7 /* XIBStyleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36A8F32024BEE07C00CE67B7 /* XIBStyleViewController.xib */; };
@@ -88,6 +89,7 @@
 		3693AC7424BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKToolViewConfiguartion.swift; sourceTree = "<group>"; };
 		3696ED8D24C5680D00C24F54 /* SKSingleDateToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSingleDateToolView.swift; sourceTree = "<group>"; };
 		3696ED8F24C5684E00C24F54 /* SKToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKToolView.swift; sourceTree = "<group>"; };
+		36A7878824C6730400F225A8 /* BasePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePickerView.swift; sourceTree = "<group>"; };
 		36A8F31C24BEDFCC00CE67B7 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		36A8F31E24BEE07300CE67B7 /* XIBStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XIBStyleViewController.swift; sourceTree = "<group>"; };
 		36A8F32024BEE07C00CE67B7 /* XIBStyleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XIBStyleViewController.xib; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 				367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */,
 				367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */,
 				367BA05B24B33EA900C7D7EA /* DayPickerView.swift */,
+				36A7878824C6730400F225A8 /* BasePickerView.swift */,
 			);
 			path = PickerView;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				36BD7D9E24C0270E000F2D63 /* TimePeriodGroup.swift in Sources */,
 				36BD7DA624C0270E000F2D63 /* Date+Bundle.swift in Sources */,
 				3693AC7524BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift in Sources */,
+				36A7878924C6730400F225A8 /* BasePickerView.swift in Sources */,
 				36BD7D9B24C0270E000F2D63 /* Date+Manipulations.swift in Sources */,
 				36BD7DA424C0270E000F2D63 /* Date+TimeAgo.swift in Sources */,
 				36BD7DA724C0270E000F2D63 /* TimePeriodCollection.swift in Sources */,

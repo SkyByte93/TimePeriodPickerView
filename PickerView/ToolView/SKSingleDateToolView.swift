@@ -52,13 +52,14 @@ class SKSingleDateToolView: SKToolView {
         addSubview(rightButton)
         if configuration.isShowSelecteTime { addSubview(currentDate) }
         
-        self.selectedBlock = { (type, pickerIndex, start, end) in
-            let start = Date(year: start.0, month: start.1, day: start.2).format(with: self.configuration.selecteTimeFormat)
-            let end = Date(year: end.0, month: end.1, day: end.2).format(with: self.configuration.selecteTimeFormat)
+        self.selectedBlock = { (type, pickerIndex, startTime, endTime) in
+            let start = Date(year: startTime.0, month: startTime.1, day: startTime.2).format(with: self.configuration.selecteTimeFormat)
+            let end = Date(year: endTime.0, month: endTime.1, day: endTime.2).format(with: self.configuration.selecteTimeFormat)
             self.currentDate.text = "\(start)\(self.configuration.startingTimeAndEndingTime)\(end)"
         }
     }
     
+    ///
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -77,15 +78,11 @@ class SKSingleDateToolView: SKToolView {
     ///
     @objc func rightButtonEvent() {
         hidenPeriodTimeView()
-//        guard let delegate = defaultDelegate else { return }
-//        delegate.tool(left: nil, right: rightButton)
     }
     
     ///
     @objc func leftButtonEvent() {
         hidenPeriodTimeView()
-//        guard let delegate = defaultDelegate else { return }
-//        delegate.tool(left: leftButton, right: nil)
     }
     
 }

@@ -21,21 +21,24 @@ class PopupStyleViewController: BaseViewController {
     }
     
     override func showPickerView(_ sender: UIButton) {
-        let configuation = SKToolViewConfiguration()
+        let toolConfiguration = SKToolViewConfiguration()
         
-        let config = SKPickerConfig()
-        config.splitLimitHidden = false
-        let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 3))
-        let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 3))
-        config.timeLimit = (start, end)
-        let pickerConfiguration = [config, config, config]
+        let pickerConfiguration = [dayConfig(), dayConfig(), dayConfig()]
         
-        let picker = SKDatePeriodPickerView.init(types: [.MONTH, .WEEK, .DAY], configuration: configuation, configuration: pickerConfiguration)
+        let picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], configuration: toolConfiguration, configuration: pickerConfiguration)
         picker.selectedIndex = 1
         picker.delegate = self
-        picker.locale = Locale(identifier: "CTS")
         
         UIApplication.shared.keyWindow?.addSubview(picker)
+    }
+    
+    func dayConfig() -> SKPickerConfiguration {
+        let dayConfig = SKPickerConfiguration()
+        let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 0))
+        let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 3, years: 0))
+        dayConfig.timeLimit = (start, end)
+        dayConfig.showMode = .fixed
+        return dayConfig
     }
 }
 
@@ -45,10 +48,10 @@ extension PopupStyleViewController: SKDatePeriodDateDelegate {
     }
     
     func SKPeriodLeftButton(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
-        print("左边按钮")
+        print("左边")
     }
     
     func SKPeriodRightButton(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
-        print("右边按钮")
+        print("右边")
     }
 }

@@ -36,7 +36,7 @@ class SKTimePeriodTableView: UITableViewController {
                  ])
         ]
         
-        tableView(UITableView(), didSelectRowAt: IndexPath(row: 3, section: 0))
+        tableView(UITableView(), didSelectRowAt: IndexPath(row: 0, section: 0))
     }
 
     // MARK: - Table view data source
