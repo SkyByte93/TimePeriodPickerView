@@ -9,3 +9,6 @@
 - [x] 适配DarkMode.
 - [x] 自定义工具栏.
 - [x] 显示时间正序,倒序.
+
+
+![这里是](https://github.com/SkyByte93/TimePeriodPickerView/raw/master/snap/1.png)
