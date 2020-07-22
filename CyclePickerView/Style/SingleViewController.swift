@@ -20,14 +20,12 @@ class SingleViewController: BaseViewController {
     }
     
     override func showPickerView(_ sender: UIButton) {
-        let configuation = SKToolViewConfiguration()
-        let config = SKPickerConfiguration()
+        let toolConfig = SKToolViewConfiguration()
+        let pickerConfig = SKPickerConfiguration()
         let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 300))
         let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 300))
-        config.timeLimit = (start, end)
-        let pickerConfiguration = [config]
-        
-        let picker = SKDatePeriodPickerView.init(types: [.MONTH], configuration: configuation, configuration: pickerConfiguration)
+        pickerConfig.timeLimit = (start, end)
+        let picker = SKDatePeriodPickerView.init(types: [.MONTH], toolConfig: toolConfig, pickerConfig: [pickerConfig])
         picker.delegate = self
         UIApplication.shared.keyWindow?.addSubview(picker)
     }

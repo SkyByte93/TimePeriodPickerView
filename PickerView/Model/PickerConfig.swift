@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 
 class SKPickerConfiguration {
-    /// 月周期格式
-//    var month: MonthFormat?
-    /// 周周期格式
-//    var week: WeekFormat?
     /// 自动选中当前日期, 默认当前日期, nil时不自动选中
     var selecteDate: Date? = Date()
     /// 自动选中动画
@@ -47,7 +43,7 @@ class SKPickerConfiguration {
     var splitLimitHidden: Bool = false
     
     /// 显示顺序
-    var order: SKPeriodOrder = .ACE
+    var order: SKPeriodOrder = .Asc
     
     init(type: SKPeriodType) {
         switch type {

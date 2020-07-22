@@ -143,7 +143,7 @@ extension WeekPickerView {
                 }
             }
         }
-        if config.order == .BCE { weekData = weekData.reversed() }
+        if config.order == .Desc { weekData = weekData.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -171,7 +171,7 @@ extension WeekPickerView {
                 weekArr.append((tempWeek, (start.year, start.month, start.day), (endTime.year, endTime.month, endTime.day)))
             }
         }
-        return config.order == .BCE ? weekArr.reversed() : weekArr
+        return config.order == .Desc ? weekArr.reversed() : weekArr
     }
     
 }

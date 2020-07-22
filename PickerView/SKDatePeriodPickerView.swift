@@ -110,8 +110,8 @@ class SKDatePeriodPickerView: UIView {
     
     public init(types: Array<SKPeriodType>,
                 frame: CGRect? = nil,
-                configuration toolConfigration: SKToolViewConfiguration? = nil,
-                configuration pickerConfiguration: Array<SKPickerConfiguration>? = nil) {
+                toolConfig toolConfigration: SKToolViewConfiguration? = nil,
+                pickerConfig pickerConfiguration: Array<SKPickerConfiguration>? = nil) {
         
         guard let frame = (frame == nil ? backgroundFrame : frame) else { super.init(frame: .zero); return }
         super.init(frame: frame)

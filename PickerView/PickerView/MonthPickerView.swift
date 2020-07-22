@@ -52,7 +52,7 @@ class MonthPickerView: BasePickerView {
     }
     
     lazy var fixedMode: Void = {
-        guard let view = self.subviews.filter{ $0.bounds.height < 100 }.first else { return }
+        guard let view = self.subviews.filter({ $0.bounds.height < 100 }).first else { return }
         view.addSubview(self.makeFiexdLable(total: 2, index: 0, text: "年", color: self.config.selectColor, font: self.config.selectFont))
         view.addSubview(self.makeFiexdLable(total: 2, index: 1, text: "月", color: self.config.selectColor, font: self.config.selectFont))
     }()
@@ -148,7 +148,7 @@ extension MonthPickerView {
                 }
             }
         }
-        if config.order == .BCE { monthDate = monthDate.reversed() }
+        if config.order == .Desc { monthDate = monthDate.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -171,7 +171,7 @@ extension BasePickerView {
                 monthArr.append(tempMonth)
             }
         }
-        return config.order == .BCE ? monthArr.reversed() : monthArr
+        return config.order == .Desc ? monthArr.reversed() : monthArr
     }
 }
 

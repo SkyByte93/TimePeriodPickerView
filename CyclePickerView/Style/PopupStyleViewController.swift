@@ -21,14 +21,12 @@ class PopupStyleViewController: BaseViewController {
     }
     
     override func showPickerView(_ sender: UIButton) {
-        let toolConfiguration = SKToolViewConfiguration()
+        let toolConfig = SKToolViewConfiguration()
         
-        let pickerConfiguration = [dayConfig(), dayConfig(), dayConfig()]
+        let pickerConfig = [dayConfig(), dayConfig(), dayConfig()]
         
-        let picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], configuration: toolConfiguration, configuration: pickerConfiguration)
-        picker.selectedIndex = 1
+        let picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], toolConfig: toolConfig, pickerConfig: pickerConfig)
         picker.delegate = self
-        
         UIApplication.shared.keyWindow?.addSubview(picker)
     }
     
@@ -38,6 +36,7 @@ class PopupStyleViewController: BaseViewController {
         let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 3, years: 30))
         dayConfig.timeLimit = (start, end)
         dayConfig.showMode = .fixed
+        dayConfig.order = .Asc
         return dayConfig
     }
 }

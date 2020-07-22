@@ -182,7 +182,7 @@ extension DayPickerView {
                 }
             }
         }
-        if config.order == .BCE { dayDate = dayDate.reversed() }
+        if config.order == .Desc { dayDate = dayDate.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -207,11 +207,11 @@ extension BasePickerView {
                 monthArr.append((tempMonth, days(start: start.day, end: start.daysInMonth)))
             }
         }
-        return config.order == .BCE ? monthArr.reversed() : monthArr
+        return config.order == .Desc ? monthArr.reversed() : monthArr
     }
     
     fileprivate func days(start: Int, end: Int) -> Array<Int> {
         let days = Array(start...end)
-        return config.order == .BCE ? days.reversed() : days
+        return config.order == .Desc ? days.reversed() : days
     }
 }

@@ -24,10 +24,10 @@ enum SKPeriodType {
 }
 
 enum SKPeriodOrder {
-    /// 正序
-    case ACE
-    /// 倒序
-    case BCE
+    /// 升序
+    case Asc
+    /// 降序
+    case Desc
 }
 
 /// 显示模式
