@@ -1,8 +1,8 @@
-## TimePeriodPickerView
+### TimePeriodPickerView
 
-# 依赖
+### 依赖
 手动导入[DateTools](https://github.com/MatthewYork/DateTools)
-# 功能实现
+### 功能实现
 - [ ] 可以选择年, 月, 日, 时, 分周期.
 - [ ] 适配Storyboard, XIB.
 - [ ] 动态添加, 修改功能.
