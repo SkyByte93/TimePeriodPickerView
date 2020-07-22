@@ -18,9 +18,8 @@ pod install ...还未实现
 ```
 
 ### 多个时间周期组装(月, 周, 天).
-<figure class="third">
+
 <img width="276" height="243" src="https://github.com/SkyByte93/TimePeriodPickerView/raw/master/Snap/1.PNG"/><img width="276" height="243" src="https://github.com/SkyByte93/TimePeriodPickerView/raw/master/Snap/2.PNG"/><img width="276" height="243" src="https://github.com/SkyByte93/TimePeriodPickerView/raw/master/Snap/3.PNG"/>
-</figure>
 
 ### 单个时间周期(天)
 
