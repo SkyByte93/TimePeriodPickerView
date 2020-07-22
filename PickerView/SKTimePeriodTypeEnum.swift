@@ -29,6 +29,7 @@ enum SKPeriodOrder {
     /// 倒序
     case BCE
 }
+
 /// 显示模式
 enum SKShowMode {
     /// 后缀

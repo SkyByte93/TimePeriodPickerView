@@ -155,7 +155,6 @@ extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension DayPickerView {
     fileprivate func calculateDay(start: Date, end: Date) {
-//        NSDiffableDataSourceSectionSnapshot
         dayDate.removeAll()
         let period = TimePeriod(beginning: start, end: end)
         if start.year == end.year {
