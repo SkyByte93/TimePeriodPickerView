@@ -16,7 +16,6 @@ class WeekPickerView: BasePickerView {
         super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .WEEK) : config)!)
         delegate = self
         dataSource = self
-        currentDate()
         calculateWeek()
     }
     
@@ -27,10 +26,9 @@ class WeekPickerView: BasePickerView {
     }
     
     func currentDate() {
-        guard let selecte = config.selecteDate else { return }
-        let week = selecte.getLastWeekMonthDayAndWeekDay()
-        guard let start = week.0, let end = week.1 else { return }
-        setCurrentPeriod((start.year, start.month, start.day), (end.year, end.month, end.day))
+        let year = weekData[selectedRow(inComponent: 0)]
+        let week = year.1[selectedRow(inComponent: 1)]
+        setCurrentPeriod((year.0, week.1.1, week.1.2), (year.0, week.2.1, week.2.2))
     }
     
     fileprivate func autoSeleteIndex() {
@@ -42,6 +40,7 @@ class WeekPickerView: BasePickerView {
                         self.selectRow(YIndex, inComponent: 0, animated: true)
                         self.reloadComponent(1)
                         self.selectRow(WIndex, inComponent: 1, animated: true)
+                        self.currentDate()
                     }
                 }
             }
@@ -163,9 +162,13 @@ extension WeekPickerView {
                     weekData.append((tempYear, weeks(start: start, end: Date.endOf(year: tempYear))))
                 }
             }
-            DispatchQueue.main.async {
-                self.reloadAllComponents()
-                if self.config.selecteDate != nil { self.autoSeleteIndex() }
+        }
+        DispatchQueue.main.async {
+            self.reloadAllComponents()
+            if self.config.selecteDate != nil {
+                self.autoSeleteIndex()
+            }else {
+                self.currentDate()
             }
         }
     }

@@ -17,7 +17,6 @@ class MonthPickerView: BasePickerView {
         super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .MONTH) : config)!)
         delegate = self
         dataSource = self
-        currentDate()
         calculateMonth()
     }
     
@@ -35,16 +34,16 @@ class MonthPickerView: BasePickerView {
                     self.selectRow(YIndex, inComponent: 0, animated: true)
                     self.reloadComponent(1)
                     self.selectRow(MIndex, inComponent: 1, animated: true)
+                    self.currentDate()
                 }
             }
         }
     }
     
     func currentDate() {
-        guard let selecte = config.selecteDate else { return }
-        let month = selecte.getLastMonthStartAndEnd()
-        guard let start = month.0, let end = month.1 else { return }
-        setCurrentPeriod(start, end)
+        let year = monthDate[selectedRow(inComponent: 0)]
+        let month = year.1[selectedRow(inComponent: 1)]
+        setCurrentPeriod((year.0, month, 1), (year.0, month, Date().getDaysInMonth(year: year.0, month: month)))
     }
     
     required init?(coder: NSCoder) {
@@ -150,7 +149,11 @@ extension MonthPickerView {
         }
         DispatchQueue.main.async {
             self.reloadAllComponents()
-            if self.config.selecteDate != nil { self.autoSeleteIndex() }
+            if self.config.selecteDate != nil {
+                self.autoSeleteIndex()
+            }else {
+                self.currentDate()
+            }
         }
     }
 }

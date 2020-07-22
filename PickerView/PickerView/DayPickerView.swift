@@ -16,7 +16,6 @@ class DayPickerView: BasePickerView {
         super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .DAY) : config)!)
         delegate = self
         dataSource = self
-        currentDate()
         calculateDay()
     }
     
@@ -27,11 +26,10 @@ class DayPickerView: BasePickerView {
     }
     
     fileprivate func currentDate() {
-        if let selected = config.selecteDate, selecteDateNotHave() {
-            setCurrentPeriod(selected, selected)
-        }else {
-            setCurrentPeriod(startTime, startTime)
-        }
+        let year = dayDate[selectedRow(inComponent: 0)]
+        let month = year.1[selectedRow(inComponent: 1)]
+        let day = month.1[selectedRow(inComponent: 2)]
+        setCurrentPeriod((year.0, month.0, day), (year.0, month.0, day))
     }
     
     fileprivate func autoSeleteIndex() {
@@ -45,6 +43,7 @@ class DayPickerView: BasePickerView {
                         self.selectRow(MIndex, inComponent: 1, animated: true)
                         self.reloadComponent(2)
                         self.selectRow(DIndex, inComponent: 2, animated: true)
+                        self.currentDate()
                     }
                 }
             }
@@ -184,7 +183,11 @@ extension DayPickerView {
         }
         DispatchQueue.main.async {
             self.reloadAllComponents()
-            if self.config.selecteDate != nil { self.autoSeleteIndex() }
+            if self.config.selecteDate != nil {
+                self.autoSeleteIndex()
+            }else {
+                self.currentDate()
+            }
         }
     }
 }
