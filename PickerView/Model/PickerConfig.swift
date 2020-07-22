@@ -16,6 +16,8 @@ class SKPickerConfiguration {
 //    var week: WeekFormat?
     /// 自动选中当前日期, 默认当前日期, nil时不自动选中
     var selecteDate: Date? = Date()
+    /// 自动选中动画
+    var selecteDateAnimation: Bool = true
     /// 时间范围
     var timeLimit: (Date, Date)!
     
@@ -26,6 +28,7 @@ class SKPickerConfiguration {
     var normalColor: UIColor = .color(default: .white, darkMode: .white)
     
     var normalFont: UIFont = .systemFont(ofSize: 18)
+    
     
     /// 显示年格式
     var yearFormat: YearMode = .YYYY

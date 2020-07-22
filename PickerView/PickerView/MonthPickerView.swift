@@ -31,9 +31,10 @@ class MonthPickerView: BasePickerView {
         for (YIndex, year) in monthDate.enumerated() where selected.year == year.0 {
             for (MIndex, month) in year.1.enumerated() where selected.month == month {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.selectRow(YIndex, inComponent: 0, animated: true)
+                    let animation = self.config.selecteDateAnimation
+                    self.selectRow(YIndex, inComponent: 0, animated: animation)
                     self.reloadComponent(1)
-                    self.selectRow(MIndex, inComponent: 1, animated: true)
+                    self.selectRow(MIndex, inComponent: 1, animated: animation)
                     self.currentDate()
                 }
             }
@@ -147,6 +148,7 @@ extension MonthPickerView {
                 }
             }
         }
+        if config.order == .BCE { monthDate = monthDate.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -158,7 +160,7 @@ extension MonthPickerView {
     }
 }
 extension BasePickerView {
-    func months(start: Date, end: Date) -> Array<Int> {
+    fileprivate func months(start: Date, end: Date) -> Array<Int> {
         var monthArr = Array<Int>()
         for tempMonth in start.month...(start.month + TimePeriod(beginning: start, end: end).chunk.months) {
             if tempMonth < end.month && tempMonth > start.month {
@@ -169,7 +171,7 @@ extension BasePickerView {
                 monthArr.append(tempMonth)
             }
         }
-        return monthArr
+        return config.order == .BCE ? monthArr.reversed() : monthArr
     }
 }
 

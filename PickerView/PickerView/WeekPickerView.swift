@@ -37,9 +37,10 @@ class WeekPickerView: BasePickerView {
             for (WIndex, week) in year.1.enumerated() {
                 if week.1.1 <= selected.month && week.2.1 >= selected.month && week.1.2 <= selected.day && week.2.2 >= selected.day {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.selectRow(YIndex, inComponent: 0, animated: true)
+                        let animation = self.config.selecteDateAnimation
+                        self.selectRow(YIndex, inComponent: 0, animated: animation)
                         self.reloadComponent(1)
-                        self.selectRow(WIndex, inComponent: 1, animated: true)
+                        self.selectRow(WIndex, inComponent: 1, animated: animation)
                         self.currentDate()
                     }
                 }
@@ -123,27 +124,6 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
 }
 
 extension WeekPickerView {
-    
-    fileprivate func weeks(start: Date, end: Date) -> Array<(Int, (Int, Int, Int), (Int, Int, Int))> {
-        let timePeriod = TimePeriod(beginning: start, end: end)
-        let integerStartDay: Int = 7 - start.week
-        var weekArr = Array<(Int, (Int, Int, Int), (Int, Int, Int))>()
-        for tempWeek in 0...timePeriod.weeks {
-            if tempWeek < timePeriod.weeks && tempWeek > 0 {
-                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
-                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek, months: 0, years: 0))
-                weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (endTime.year, endTime.month, endTime.day)))
-            }else if tempWeek == timePeriod.weeks {
-                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
-                weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (end.year, end.month, end.day)))
-            }else if tempWeek == 0 {
-                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: 0, months: 0, years: 0))
-                weekArr.append((tempWeek, (start.year, start.month, start.day), (endTime.year, endTime.month, endTime.day)))
-            }
-        }
-        return weekArr
-    }
-    
     fileprivate func calculateWeek(start: Date, end: Date) {
         let period = TimePeriod(beginning: start, end: end)
         if start.year == end.year {
@@ -163,6 +143,7 @@ extension WeekPickerView {
                 }
             }
         }
+        if config.order == .BCE { weekData = weekData.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -172,4 +153,25 @@ extension WeekPickerView {
             }
         }
     }
+    
+    fileprivate func weeks(start: Date, end: Date) -> Array<(Int, (Int, Int, Int), (Int, Int, Int))> {
+        let timePeriod = TimePeriod(beginning: start, end: end)
+        let integerStartDay: Int = 7 - start.week
+        var weekArr = Array<(Int, (Int, Int, Int), (Int, Int, Int))>()
+        for tempWeek in 0...timePeriod.weeks {
+            if tempWeek < timePeriod.weeks && tempWeek > 0 {
+                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
+                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek, months: 0, years: 0))
+                weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (endTime.year, endTime.month, endTime.day)))
+            }else if tempWeek == timePeriod.weeks {
+                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
+                weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (end.year, end.month, end.day)))
+            }else if tempWeek == 0 {
+                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: 0, months: 0, years: 0))
+                weekArr.append((tempWeek, (start.year, start.month, start.day), (endTime.year, endTime.month, endTime.day)))
+            }
+        }
+        return config.order == .BCE ? weekArr.reversed() : weekArr
+    }
+    
 }

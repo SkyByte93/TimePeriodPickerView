@@ -38,11 +38,12 @@ class DayPickerView: BasePickerView {
             for (MIndex, month) in year.1.enumerated() where selected.month == month.0 {
                 for (DIndex, day) in month.1.enumerated() where selected.day == day {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.selectRow(YIndex, inComponent: 0, animated: true)
+                        let animation = self.config.selecteDateAnimation
+                        self.selectRow(YIndex, inComponent: 0, animated: animation)
                         self.reloadComponent(1)
-                        self.selectRow(MIndex, inComponent: 1, animated: true)
+                        self.selectRow(MIndex, inComponent: 1, animated: animation)
                         self.reloadComponent(2)
-                        self.selectRow(DIndex, inComponent: 2, animated: true)
+                        self.selectRow(DIndex, inComponent: 2, animated: animation)
                         self.currentDate()
                     }
                 }
@@ -57,7 +58,7 @@ class DayPickerView: BasePickerView {
     
     ///
     lazy var fixedMode: Void = {
-        guard let view = self.subviews.filter{ $0.bounds.height < 100 }.first else { return }
+        guard let view = self.subviews.filter({ $0.bounds.height < 100 }).first else { return }
         view.addSubview(makeFiexdLable(total: 3, index: 0, text: "年", color: config.selectColor, font: config.selectFont))
         view.addSubview(makeFiexdLable(total: 3, index: 1, text: "月", color: config.selectColor, font: config.selectFont))
         view.addSubview(makeFiexdLable(total: 3, index: 2, text: "日", color: config.selectColor, font: config.selectFont))
@@ -181,6 +182,7 @@ extension DayPickerView {
                 }
             }
         }
+        if config.order == .BCE { dayDate = dayDate.reversed() }
         DispatchQueue.main.async {
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
@@ -198,13 +200,18 @@ extension BasePickerView {
         for tempMonth in start.month...(start.month + TimePeriod(beginning: start, end: end).chunk.months) {
             if tempMonth < end.month && tempMonth > start.month {
                 let time = Date(year: start.year, month: tempMonth, day: 1)
-                monthArr.append((tempMonth, Array(1...time.daysInMonth)))
+                monthArr.append((tempMonth, days(start: 1, end: time.daysInMonth)))
             }else if tempMonth == end.month {
-                monthArr.append((tempMonth, Array(1...end.day)))
+                monthArr.append((tempMonth, days(start: 1, end: end.day)))
             }else if tempMonth == start.month {
-                monthArr.append((tempMonth, Array(start.day...start.daysInMonth)))
+                monthArr.append((tempMonth, days(start: start.day, end: start.daysInMonth)))
             }
         }
-        return monthArr
+        return config.order == .BCE ? monthArr.reversed() : monthArr
+    }
+    
+    fileprivate func days(start: Int, end: Int) -> Array<Int> {
+        let days = Array(start...end)
+        return config.order == .BCE ? days.reversed() : days
     }
 }
