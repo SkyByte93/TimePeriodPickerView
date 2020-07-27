@@ -21,6 +21,7 @@ class WeekPickerView: BasePickerView {
     
     fileprivate func calculateWeek() {
         DispatchQueue(label: "background", qos: .background).async {
+            self.weekData.removeAll()
             self.calculateWeek(start: self.startTime, end: self.endTime)
         }
     }
@@ -35,17 +36,30 @@ class WeekPickerView: BasePickerView {
         guard let selected = config.selecteDate, selecteDateNotHave() else { return }
         for (YIndex, year) in weekData.enumerated() where selected.year == year.0 {
             for (WIndex, week) in year.1.enumerated() {
-                if week.1.1 <= selected.month && week.2.1 >= selected.month && week.1.2 <= selected.day && week.2.2 >= selected.day {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        let animation = self.config.selecteDateAnimation
-                        self.selectRow(YIndex, inComponent: 0, animated: animation)
-                        self.reloadComponent(1)
-                        self.selectRow(WIndex, inComponent: 1, animated: animation)
-                        self.currentDate()
+                if week.1.1 == selected.month && week.2.1 == selected.month {
+                    if week.1.2 <= selected.day && week.2.2 >= selected.day {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            self.location(year: YIndex, week: WIndex)
+                        }
+                    }
+                }else {
+                    if week.1.1 <= selected.month && week.2.1 >= selected.month && week.1.1 <= selected.day {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            self.location(year: YIndex, week: WIndex)
+                        }
                     }
                 }
             }
         }
+    }
+    
+    fileprivate func location(year: Int, week: Int) {
+        let animation = config.selecteDateAnimation
+        selectRow(year, inComponent: 0, animated: animation)
+        reloadComponent(1)
+        selectRow(week, inComponent: 1, animated: animation)
+        currentDate()
+        periodDelegate(self, .MONTH)
     }
     
     required init?(coder: NSCoder) {
@@ -76,10 +90,8 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         
         // 修改字体样式
         var pickerLabel = view as? UILabel
-        if pickerLabel == nil {
-            pickerLabel = UILabel()
-            pickerLabel?.textAlignment = .center
-        }
+        if pickerLabel == nil { pickerLabel = UILabel() }
+        pickerLabel?.textAlignment = .center
         pickerLabel?.font = config.selectFont
         pickerLabel?.textColor = config.selectColor
         

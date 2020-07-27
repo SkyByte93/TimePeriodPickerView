@@ -10,21 +10,20 @@ import Foundation
 import UIKit
 
 class SKPickerConfiguration {
-    /// 自动选中当前日期, 默认当前日期, nil时不自动选中
+    /// 自动选中当前日期, 默认当前日期, 为nil时不自动选中
     var selecteDate: Date? = Date()
     /// 自动选中动画
     var selecteDateAnimation: Bool = true
     /// 时间范围
     var timeLimit: (Date, Date)!
-    
+    ///
     var selectColor: UIColor = .color(default: .red, darkMode: .red)
-    
+    ///
     var selectFont: UIFont = .systemFont(ofSize: 18)
-    
+    ///
     var normalColor: UIColor = .color(default: .white, darkMode: .white)
-    
+    ///
     var normalFont: UIFont = .systemFont(ofSize: 18)
-    
     
     /// 显示年格式
     var yearFormat: YearMode = .YYYY
@@ -55,7 +54,10 @@ class SKPickerConfiguration {
         case .SECOND: break
         }
     }
-    init() {}
+    
+    init(start: Date, end: Date) {
+        self.timeLimit = (start, end)
+    }
 }
 
 //class MonthFormat: NSObject {

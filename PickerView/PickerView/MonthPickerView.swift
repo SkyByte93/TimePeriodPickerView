@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-let labelWidth: CGFloat = 80.0
+let labelWidth: CGFloat = 60.0
 
 class MonthPickerView: BasePickerView {
     private var monthDate = Array<(Int, Array<Int>)>()
@@ -22,6 +22,7 @@ class MonthPickerView: BasePickerView {
     
     fileprivate func calculateMonth() {
         DispatchQueue(label: "background", qos: .background).async {
+            self.monthDate.removeAll()
             self.calculateMonth(start: self.startTime, end: self.endTime)
         }
     }
@@ -31,14 +32,19 @@ class MonthPickerView: BasePickerView {
         for (YIndex, year) in monthDate.enumerated() where selected.year == year.0 {
             for (MIndex, month) in year.1.enumerated() where selected.month == month {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    let animation = self.config.selecteDateAnimation
-                    self.selectRow(YIndex, inComponent: 0, animated: animation)
-                    self.reloadComponent(1)
-                    self.selectRow(MIndex, inComponent: 1, animated: animation)
-                    self.currentDate()
+                    self.location(year: YIndex, month: MIndex)
                 }
             }
         }
+    }
+    
+    fileprivate func location(year: Int, month: Int) {
+        let animation = config.selecteDateAnimation
+        selectRow(year, inComponent: 0, animated: animation)
+        reloadComponent(1)
+        selectRow(month, inComponent: 1, animated: animation)
+        currentDate()
+        periodDelegate(self, .MONTH)
     }
     
     func currentDate() {
@@ -130,6 +136,7 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
 extension MonthPickerView {
     
     fileprivate func calculateMonth(start: Date, end: Date) {
+        print("月-开始时间:\(Date())")
         let period = TimePeriod(beginning: start, end: end)
         if start.year == end.year {
             monthDate.append((start.year, months(start: start, end: end)))
@@ -148,8 +155,10 @@ extension MonthPickerView {
                 }
             }
         }
+        
         if config.order == .Desc { monthDate = monthDate.reversed() }
         DispatchQueue.main.async {
+            print("月-结束时间:\(Date())")
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
                 self.autoSeleteIndex()

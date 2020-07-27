@@ -31,10 +31,9 @@ class PopupStyleViewController: BaseViewController {
     }
     
     func dayConfig() -> SKPickerConfiguration {
-        let dayConfig = SKPickerConfiguration()
-        let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 30))
-        let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 3, years: 30))
-        dayConfig.timeLimit = (start, end)
+        let start = Date().subtract(TimeChunka(days: 3, weeks: 3, months: 0, years: 30))
+        let end = Date().add(TimeChunka(days: 3, weeks: 3, months: 3, years: 30))
+        let dayConfig = SKPickerConfiguration(start: start, end: end)
         dayConfig.showMode = .fixed
         dayConfig.order = .Asc
         return dayConfig

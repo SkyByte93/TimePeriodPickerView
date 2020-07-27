@@ -14,12 +14,7 @@ struct ListModel {
 }
 
 class SKTimePeriodTableView: UITableViewController {
-    var datas = Array<(String, Array<ListModel>)>()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "时间周期选择器"
-        datas = [("样式",[ListModel(title: "弹窗样式", detail: "PopupStyleViewController"),
+    var datas = [("样式",[ListModel(title: "弹窗样式", detail: "PopupStyleViewController"),
                             ListModel(title: "默认样式", detail: "DefaultStyleViewController"),
                             ListModel(title: "XIB适配", detail: "XIBStyleViewController"),
                             ListModel(title: "单个周期选择器", detail: "SingleViewController"),
@@ -35,8 +30,12 @@ class SKTimePeriodTableView: UITableViewController {
                                ListModel(title: "自定义时间格式", detail: "TimeFormatCustomViewController")
                  ])
         ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "时间周期选择器"
         
-        tableView(UITableView(), didSelectRowAt: IndexPath(row: 0, section: 0))
+        tableView(UITableView(), didSelectRowAt: IndexPath(row: 3, section: 0))
     }
 
     // MARK: - Table view data source
@@ -49,7 +48,7 @@ class SKTimePeriodTableView: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "123")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "identifier")
         let model = datas[indexPath.section].1[indexPath.row]
         cell.textLabel?.text = model.title
         cell.detailTextLabel?.text = model.detail

@@ -21,6 +21,7 @@ class DayPickerView: BasePickerView {
     
     fileprivate func calculateDay() {
         DispatchQueue(label: "background", qos: .background).async {
+            self.dayDate.removeAll()
             self.calculateDay(start: self.startTime, end: self.endTime)
         }
     }
@@ -38,17 +39,22 @@ class DayPickerView: BasePickerView {
             for (MIndex, month) in year.1.enumerated() where selected.month == month.0 {
                 for (DIndex, day) in month.1.enumerated() where selected.day == day {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        let animation = self.config.selecteDateAnimation
-                        self.selectRow(YIndex, inComponent: 0, animated: animation)
-                        self.reloadComponent(1)
-                        self.selectRow(MIndex, inComponent: 1, animated: animation)
-                        self.reloadComponent(2)
-                        self.selectRow(DIndex, inComponent: 2, animated: animation)
-                        self.currentDate()
+                        self.location(year: YIndex, month: MIndex, day: DIndex)
                     }
                 }
             }
         }
+    }
+    
+    fileprivate func location(year: Int, month: Int, day: Int) {
+        let animation = config.selecteDateAnimation
+        selectRow(year, inComponent: 0, animated: animation)
+        reloadComponent(1)
+        selectRow(month, inComponent: 1, animated: animation)
+        reloadComponent(2)
+        selectRow(day, inComponent: 2, animated: animation)
+        currentDate()
+        periodDelegate(self, .DAY)
     }
     
     ///
@@ -101,7 +107,6 @@ extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
             let day = monthArr.1[selectedRow(inComponent: 2)]
             setCurrentPeriod((yearArr.0, monthArr.0, day), (yearArr.0, monthArr.0, day))
         }
-
         periodDelegate(self, .DAY)
     }
     
@@ -155,7 +160,6 @@ extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension DayPickerView {
     fileprivate func calculateDay(start: Date, end: Date) {
-        dayDate.removeAll()
         let period = TimePeriod(beginning: start, end: end)
         if start.year == end.year {
             if start.month == end.month {

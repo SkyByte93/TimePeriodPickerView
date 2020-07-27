@@ -36,7 +36,7 @@ class SKToolView: UIView {
     }
     
     final func hidenPeriodTimeView() {
-        if let delegate = delegate { delegate.hiden() }
+        if let delegate = delegate { delegate.hidenTimePeriod() }
     }
     
     ///

@@ -11,7 +11,7 @@ import UIKit
 
 protocol SKToolViewProtocol {
     ///
-    func hiden()
+    func hidenTimePeriod()
     ///
     func selectePickerView(selected type: SKPeriodType, selected index: Int)
 }

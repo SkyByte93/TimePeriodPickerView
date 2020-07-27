@@ -19,24 +19,30 @@ typealias SKPeriodDate = (Int, Int, Int)
 typealias DatePeriodConfirmBlock = ((_ type: SKPeriodType,_ startTime: SKPeriodDate, _ endTime: SKPeriodDate)->())
 
 class SKDatePeriodPickerView: UIView {
-    ///
+    
+    /// 代理
     public weak var delegate: SKDatePeriodDateDelegate?
-    ///
+    
+    /// 尺寸
     public var backgroundFrame: CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height) {
         willSet { frame = newValue }
     }
-    ///
+    
+    /// 主要页面尺寸
     public var mainFrame: CGRect = CGRect(x: 0, y: kScreenH - 400, width: kScreenW, height: 400) {
         willSet { mainView.frame = newValue }
     }
+    
     ///
     public var mainBackground: UIColor = .color(default: .white, darkMode: .black) {
         willSet { mainView.backgroundColor = newValue }
     }
+    
     /// 遮罩层背景色
     public var shadeBackground: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3) {
         willSet { backgroundColor = newValue }
     }
+    
     /// 选中的Index
     public var selectedIndex: Int = 0 {
         willSet {
@@ -46,18 +52,16 @@ class SKDatePeriodPickerView: UIView {
             }
         }
     }
+    
     /// 是否定位到上次选中时间的位置
     public var autoLocationDate: Bool = false {
         willSet {}
     }
+    
     /// 选择器左右切换动画, 默认有.
     public var scrollSwitchAnimation: Bool = true
     /// 是否适配暗黑模式, 默认是
     public var isAdaptiveDrakMode: Bool = true
-    /// 本地化时间
-    public var locale: Locale?
-    /// 本地化时区
-    public var timeZone: TimeZone?
     /// 周期开始时间
     public var periodStartTime: Date?
     /// 周期结束时间
@@ -77,14 +81,12 @@ class SKDatePeriodPickerView: UIView {
     ///
     private var pickerArr = Array<PickerViewModel>()
     ///
-    private var currentType: SKPeriodType? = nil
-    
     fileprivate lazy var mainView: UIView = {
         let view = UIView(frame: mainFrame)
         view.backgroundColor = mainBackground
         return view
     }()
-    
+    ///
     fileprivate lazy var scroll: UIScrollView = {
         var height: CGFloat = 0
         if #available(iOS 11.0, *) {
@@ -102,12 +104,12 @@ class SKDatePeriodPickerView: UIView {
         view.delegate = self
         return view
     }()
-    
+    ///
     fileprivate lazy var gesture: UIGestureRecognizer = {
         let gesture = UIGestureRecognizer(target: self, action: #selector(hidenView))
         return gesture
     }()
-    
+    ///
     public init(types: Array<SKPeriodType>,
                 frame: CGRect? = nil,
                 toolConfig toolConfigration: SKToolViewConfiguration? = nil,
@@ -124,6 +126,7 @@ class SKDatePeriodPickerView: UIView {
         addSubview(mainView)
         mainView.addSubview(toolView)
         mainView.addSubview(scroll)
+        
         ///
         makePickerView(types: types, pickerArr: &pickerArr, config: pickerConfiguration)
         pickerViewAddMainView()
@@ -137,50 +140,44 @@ class SKDatePeriodPickerView: UIView {
         for (index, item) in types.enumerated() {
             let frame = CGRect(x: kScreenW * CGFloat(index), y: 0, width: scroll.bounds.width, height: scroll.bounds.height)
             let config = config == nil ? nil : config![index]
+            let isSelecte = selectedIndex == index
             switch item {
-            case .DAY: pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(frame: frame, config: config)))
-            case .WEEK: pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame, config: config)))
-            case .MONTH: pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame, config: config)))
-            case .MINUTE: break
-            case .HOUR: break
-            case .SECOND: break
+            case .DAY:
+                pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(frame: frame, config: config), isSelected: isSelecte))
+            case .WEEK:
+                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame, config: config),isSelected: isSelecte))
+            case .MONTH:
+                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame, config: config), isSelected: isSelecte))
+            case .MINUTE:
+                break
+            case .HOUR:
+                break
+            case .SECOND:
+                break
             }
         }
     }
     
+    ///
     func dayPickerView(frame: CGRect, config: SKPickerConfiguration?) -> DayPickerView {
         let pickerView = DayPickerView.init(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
+    ///
     func weekPickerView(frame: CGRect, config: SKPickerConfiguration?) -> WeekPickerView {
         let pickerView = WeekPickerView(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
+    ///
     func monthPickerView(frame: CGRect, config: SKPickerConfiguration?) -> MonthPickerView {
         let pickerView = MonthPickerView(frame: frame, config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
-    
-    ///
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        guard isUserInteractionEnabled || !isHidden || !(alpha <= 0.01) else { return nil }
-//        /// 遍历图层
-//        for subview in subviews.reversed() {
-//            let convertedPoint = subview.convert(point, from: self)
-//            let hitTestView = subview.hitTest(convertedPoint, with: event)
-//            if hitTestView is UIButton {
-//                return toolView
-//            }else {
-//                return hitTestView
-//            }
-//        }
-//        return nil
-//    }
     
     ///
     func pickerViewAddMainView() {
@@ -217,17 +214,19 @@ class SKDatePeriodPickerView: UIView {
         super.init(coder: aDecoder)
     }
     
-    
+    ///
     override func layoutSubviews() {
         super.layoutSubviews()
         animationedShow()
     }
     
+    ///
     override func awakeFromNib() {
         super.awakeFromNib()
         animationedShow()
     }
     
+    ///
     func animationedShow() {
         mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
         backgroundColor = .clear
@@ -238,39 +237,22 @@ class SKDatePeriodPickerView: UIView {
         }
     }
     
+    ///
     func animationedHiden() {
         UIView.animate(withDuration: 0.3, animations: {
             self.mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
             self.backgroundColor = .clear
         }) { (bool) in
             #warning("在lazy加载一次后, 再次添加到view上, 由于DatePeriodPickerView被删除, 不能进行添加, 后期优化")
+            self.pickerArr.removeAll()
             self.removeFromSuperview()
         }
     }
     
-    func changeCurrentTime(index: Int) {
-        guard index >= 0 && index < pickerArr.count  else { return }
-        let model = pickerArr[index]
-        if let picker = model.pickerView as? BasePickerView {
-            let start: (Int, Int, Int) = (picker.currentPeriod.0.year, picker.currentPeriod.0.month, picker.currentPeriod.0.day)
-            let end: (Int, Int, Int) = (picker.currentPeriod.1.year, picker.currentPeriod.1.month, picker.currentPeriod.1.day)
-            currentPeriodDate = (start, end)
-        }
-        if let delegate = delegate, let date = currentPeriodDate {
-            delegate.SKPeriod(periodView: self, timeType: model.type, start: date.0, end: date.1)
-        }
-    }
+}
+
+extension SKDatePeriodPickerView:UIScrollViewDelegate, SKToolViewProtocol, SKDatePeriodPickerViewDelegate {
     
-}
-extension SKDatePeriodPickerView: SKDatePeriodPickerViewDelegate {
-    func pickerView(pickerView: UIPickerView, type: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
-        currentPeriodDate = (start, end)
-        if let delegate = delegate {
-            delegate.SKPeriod(periodView: self, timeType: type, start: start, end: end)
-        }
-    }
-}
-extension SKDatePeriodPickerView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let index = (scrollView.contentOffset.x / scroll.bounds.width)
         let intIndex = round(index)
@@ -281,9 +263,35 @@ extension SKDatePeriodPickerView: UIScrollViewDelegate {
         changeCurrentTime(index: Int(intIndex))
     }
     
-}
-
-extension SKDatePeriodPickerView: SKToolViewProtocol {
+    ///
+    fileprivate func changeCurrentTime(index: Int) {
+        guard index >= 0 && index < pickerArr.count  else { return }
+        let model = pickerArr[index]
+        if let picker = model.pickerView as? BasePickerView {
+            let start: (Int, Int, Int) = (picker.currentPeriod.0.year, picker.currentPeriod.0.month, picker.currentPeriod.0.day)
+            let end: (Int, Int, Int) = (picker.currentPeriod.1.year, picker.currentPeriod.1.month, picker.currentPeriod.1.day)
+            currentPeriodDate = (start, end)
+        }
+        
+        if let delegate = delegate, let date = currentPeriodDate {
+            delegate.SKPeriod(periodView: self, timeType: model.type, start: date.0, end: date.1)
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, type: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
+        guard pickerArr.count > selectedIndex else { return }
+        if pickerArr.count == 1 || pickerView == pickerArr[selectedIndex].pickerView {
+            currentPeriodDate = (start, end)
+            if let delegate = delegate {
+                delegate.SKPeriod(periodView: self, timeType: type, start: start, end: end)
+            }
+        }
+    }
+    
+    func hidenTimePeriod() {
+        animationedHiden()
+    }
+    
     func selectePickerView(selected type: SKPeriodType, selected index: Int) {
         if scrollSwitchAnimation {
             UIView.animate(withDuration: 0.3) { self.scrollOffSet(index) }
@@ -292,24 +300,7 @@ extension SKDatePeriodPickerView: SKToolViewProtocol {
         }
     }
     
-    // 隐藏事件
-    func hiden() {
-        animationedHiden()
-    }
-    
-//    func tool(left leftBtn: UIButton?, right rightBtn: UIButton?) {
-//        if leftBtn != nil {
-//            if let delegate = delegate, let date = currentPeriodDate {
-//                delegate.SKPeriodLeftButton(periodView: self, timeType: .MONTH, start: date.0, end: date.1)
-//            }
-//        } else if rightBtn != nil {
-//            if let delegate = delegate, let date = currentPeriodDate {
-//                delegate.SKPeriodRightButton(periodView: self, timeType: .MONTH, start: date.0, end: date.1)
-//            }
-//        }
-//        animationedHiden()
-//    }
-    
+    ///
     fileprivate func scrollOffSet(_ index: Int) {
         scroll.contentOffset = CGPoint(x: Int(scroll.bounds.width) * index, y: 0)
     }

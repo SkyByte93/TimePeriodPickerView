@@ -8,6 +8,7 @@
 import UIKit
 
 class DefaultStyleViewController: BaseViewController {
+    var picker: SKDatePeriodPickerView!
     override func viewDidLoad() {
         super.viewDidLoad()
         addShowButton()
@@ -15,21 +16,16 @@ class DefaultStyleViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.showPickerView(UIButton())
         }
+        
+        let pickerConfig = SKPickerConfiguration(start: Date(timeIntervalSince1970: TimeInterval(10000)), end: Date())
+        picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], pickerConfig: [pickerConfig, pickerConfig, pickerConfig])
+        picker.delegate = self
     }
     
     override func showPickerView(_ sender: UIButton) {
-        let picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], pickerConfig: [pickerViewConfig(), pickerViewConfig(), pickerViewConfig()])
-        picker.delegate = self
         UIApplication.shared.keyWindow?.addSubview(picker)
     }
     
-    func pickerViewConfig() -> SKPickerConfiguration {
-        let dayConfig = SKPickerConfiguration()
-        let start = Date().subtract(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 0, years: 30))
-        let end = Date().add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: 3, weeks: 3, months: 3, years: 30))
-        dayConfig.timeLimit = (start, end)
-        return dayConfig
-    }
 }
 
 extension DefaultStyleViewController: SKDatePeriodDateDelegate {

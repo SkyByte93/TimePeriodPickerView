@@ -43,3 +43,14 @@ extension Date {
     }
 }
 
+func TimeChunka(seconds: Int = 0, minutes: Int = 0, hours: Int = 0, days: Int = 0, weeks: Int = 0, months: Int = 0, years: Int = 0) -> TimeChunk {
+    return TimeChunk(seconds: seconds, minutes: minutes, hours: hours, days: days, weeks: weeks, months: months, years: years)
+}
+
+func timeNow() -> String {
+    let date = Date()
+    let timeFormatter = DateFormatter()
+    timeFormatter.dateFormat = "yyy-MM-dd HH:mm:ss.SSS"
+    let strNowTime = timeFormatter.string(from: date) as String
+    return strNowTime
+}

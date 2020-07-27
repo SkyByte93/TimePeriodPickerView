@@ -9,6 +9,7 @@
 import UIKit
 
 class SKSingleDateToolView: SKToolView {
+    
     ///
     fileprivate lazy var leftButton: UIButton = {
         let button = UIButton()

@@ -23,7 +23,7 @@
 		3693AC6324BBEA7D00FB8E4C /* SKDatePeriodToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6224BBEA7D00FB8E4C /* SKDatePeriodToolView.swift */; };
 		3693AC6724BC0AE800FB8E4C /* SKDatePeriodProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6624BC0AE800FB8E4C /* SKDatePeriodProtocol.swift */; };
 		3693AC6B24BD9BDB00FB8E4C /* SKTimePeriodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */; };
-		3693AC6D24BD9F5900FB8E4C /* PickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */; };
+		3693AC6D24BD9F5900FB8E4C /* SKPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6C24BD9F5900FB8E4C /* SKPickerConfiguration.swift */; };
 		3693AC7124BDA22800FB8E4C /* SKTimePeriodAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7024BDA22800FB8E4C /* SKTimePeriodAnimation.swift */; };
 		3693AC7324BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7224BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift */; };
 		3693AC7524BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC7424BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift */; };
@@ -83,7 +83,7 @@
 		3693AC6224BBEA7D00FB8E4C /* SKDatePeriodToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDatePeriodToolView.swift; sourceTree = "<group>"; };
 		3693AC6624BC0AE800FB8E4C /* SKDatePeriodProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDatePeriodProtocol.swift; sourceTree = "<group>"; };
 		3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodModel.swift; sourceTree = "<group>"; };
-		3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerConfig.swift; sourceTree = "<group>"; };
+		3693AC6C24BD9F5900FB8E4C /* SKPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPickerConfiguration.swift; sourceTree = "<group>"; };
 		3693AC7024BDA22800FB8E4C /* SKTimePeriodAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodAnimation.swift; sourceTree = "<group>"; };
 		3693AC7224BDA5C000FB8E4C /* SKTimePeriodTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTimePeriodTypeEnum.swift; sourceTree = "<group>"; };
 		3693AC7424BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKToolViewConfiguartion.swift; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				3693AC6A24BD9BDB00FB8E4C /* SKTimePeriodModel.swift */,
-				3693AC6C24BD9F5900FB8E4C /* PickerConfig.swift */,
+				3693AC6C24BD9F5900FB8E4C /* SKPickerConfiguration.swift */,
 				3693AC7424BDA7FE00FB8E4C /* SKToolViewConfiguartion.swift */,
 			);
 			path = Model;
@@ -377,7 +377,7 @@
 				36BD7DA524C0270E000F2D63 /* Integer+DateTools.swift in Sources */,
 				364902AF24BED8B600A5EC5B /* DefaultStyleViewController.swift in Sources */,
 				364902AB24BED21800A5EC5B /* SKTimePeriodTableView.swift in Sources */,
-				3693AC6D24BD9F5900FB8E4C /* PickerConfig.swift in Sources */,
+				3693AC6D24BD9F5900FB8E4C /* SKPickerConfiguration.swift in Sources */,
 				367BA02924B3375600C7D7EA /* PopupStyleViewController.swift in Sources */,
 				3693AC6724BC0AE800FB8E4C /* SKDatePeriodProtocol.swift in Sources */,
 				36BD7D9C24C0270E000F2D63 /* TimePeriod.swift in Sources */,

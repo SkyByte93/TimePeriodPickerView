@@ -6,12 +6,13 @@
 //  Copyright © 2020 jetson. All rights reserved.
 //
 
+
 import UIKit
 
 class BasePickerView: UIPickerView {
     var currentPeriod: (Date,Date) = (Date(),Date())
     
-    var periodDelegate: SKDatePeriodPickerViewDelegate?
+    weak var periodDelegate: SKDatePeriodPickerViewDelegate?
     
     var config: SKPickerConfiguration!
     
