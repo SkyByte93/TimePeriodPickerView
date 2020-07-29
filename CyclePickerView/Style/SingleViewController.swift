@@ -11,8 +11,9 @@ import UIKit
 class SingleViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        addShowButton()
-        addShowTimeLabel()
+        addDisplayButton()
+        addDisplayTimeLabel()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.showPickerView(UIButton())
         }
@@ -27,10 +28,10 @@ class SingleViewController: BaseViewController {
         
         let picker = SKDatePeriodPickerView(types: [.DAY], toolConfig: toolConfig, pickerConfig: [pickerConfig])
         picker.delegate = self
+        SKPickerView = picker
         
-        UIApplication.shared.keyWindow?.addSubview(picker)
+        addPickerViewConstraints()
     }
-    
 }
 
 extension SingleViewController: SKDatePeriodDateDelegate {

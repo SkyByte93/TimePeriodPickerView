@@ -13,8 +13,8 @@ let labelWidth: CGFloat = 60.0
 class MonthPickerView: BasePickerView {
     private var monthDate = Array<(Int, Array<Int>)>()
     
-    override init(frame: CGRect, config: SKPickerConfiguration? = nil) {
-        super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .MONTH) : config)!)
+    override init(config: SKPickerConfiguration? = nil) {
+        super.init(config: (config == nil ? SKPickerConfiguration(type: .MONTH) : config)!)
         delegate = self
         dataSource = self
         calculateMonth()
@@ -58,9 +58,9 @@ class MonthPickerView: BasePickerView {
     }
     
     lazy var fixedMode: Void = {
-        guard let view = self.subviews.filter({ $0.bounds.height < 100 }).first else { return }
-        view.addSubview(self.makeFiexdLable(total: 2, index: 0, text: "年", color: self.config.selectColor, font: self.config.selectFont))
-        view.addSubview(self.makeFiexdLable(total: 2, index: 1, text: "月", color: self.config.selectColor, font: self.config.selectFont))
+        guard let view = subviews.filter({ $0.bounds.height < 100 }).first else { return }
+        makeFiexdLable(subview: view, total: 2, index: 0, text: "年")
+        makeFiexdLable(subview: view, total: 2, index: 1, text: "月")
     }()
 }
 
@@ -69,6 +69,7 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         if component == 0 {
             return monthDate.count
         }else {
+            guard monthDate.count > pickerView.selectedRow(inComponent: 0) else { return 0 }
             return monthDate.count > 0 ? monthDate[pickerView.selectedRow(inComponent: 0)].1.count : 0
         }
     }
@@ -96,7 +97,9 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         pickerLabel?.textColor = config.selectColor
         
         if component == 0 {
-            pickerLabel?.text = "\(monthDate[row].0)" + (config.showMode == .suffix ? "年" : "")
+            if monthDate.count > row {
+                pickerLabel?.text = "\(monthDate[row].0)" + (config.showMode == .suffix ? "年" : "")
+            }
         }else {
             guard monthDate[pickerView.selectedRow(inComponent: 0)].1.count >= row else { return pickerLabel! }
             pickerLabel?.text = "\(monthDate[pickerView.selectedRow(inComponent: 0)].1[row])" + (config.showMode == .suffix ? "月" : "")
@@ -136,7 +139,6 @@ extension MonthPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
 extension MonthPickerView {
     
     fileprivate func calculateMonth(start: Date, end: Date) {
-        print("月-开始时间:\(Date())")
         let period = TimePeriod(beginning: start, end: end)
         if start.year == end.year {
             monthDate.append((start.year, months(start: start, end: end)))
@@ -158,7 +160,6 @@ extension MonthPickerView {
         
         if config.order == .Desc { monthDate = monthDate.reversed() }
         DispatchQueue.main.async {
-            print("月-结束时间:\(Date())")
             self.reloadAllComponents()
             if self.config.selecteDate != nil {
                 self.autoSeleteIndex()
@@ -184,15 +185,20 @@ extension BasePickerView {
     }
 }
 
-extension UIPickerView {
-    func makeFiexdLable(total: CGFloat, index: CGFloat, text: String, color: UIColor, font: UIFont) -> UILabel {
-        let fixedWidth: CGFloat = 30.0
-        let x = CGFloat((kScreenW / total) * index) + CGFloat((kScreenW / total - labelWidth) / total) + labelWidth
-        let label = UILabel(frame: CGRect(x: x, y: 0, width: fixedWidth, height: 34))
+extension BasePickerView {
+    func makeFiexdLable(subview: UIView, total: CGFloat, index: CGFloat, text: String) {
+        let label = UILabel()
         label.text = text
         label.textAlignment = .center
-        label.textColor = color
-        label.font = font
-        return label
+        label.textColor = config.selectColor
+        label.font = config.selectFont
+        
+        let average = (kScreenW / total) * (index + 0.7)
+        subview.addSubview(label)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        subview.addConstraints([NSLayoutConstraint(item: label, attribute: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1.0, constant: 0),
+                                NSLayoutConstraint(item: label, attribute: .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1.0, constant: 0),
+                                NSLayoutConstraint(item: label, attribute: .left, relatedBy: .equal, toItem: subview, attribute: .left, multiplier: 1.0, constant: average)])
     }
 }

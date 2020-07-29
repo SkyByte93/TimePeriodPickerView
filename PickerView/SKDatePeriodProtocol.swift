@@ -42,11 +42,11 @@ extension SKDatePeriodDateDelegate {
 }
 
 extension UIColor {
-    static func color(default color: UIColor, darkMode: UIColor) -> UIColor {
+    static func color(light: UIColor, dark: UIColor) -> UIColor {
         if #available(iOS 13.0, *) {
-            return UIColor { $0.userInterfaceStyle == .dark ? darkMode : color }
+            return UIColor { $0.userInterfaceStyle == .dark ? dark : light }
         }else {
-            return color
+            return light
         }
     }
 }

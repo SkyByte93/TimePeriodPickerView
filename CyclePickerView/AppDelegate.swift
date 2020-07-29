@@ -9,14 +9,12 @@
 import UIKit
 
 @UIApplicationMain
-
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .color(default: .white, darkMode: .black)
+        window?.backgroundColor = .color(light: .white, dark: .black)
         window?.rootViewController = UINavigationController(rootViewController: SKTimePeriodTableView())
         window?.makeKeyAndVisible()
         return true

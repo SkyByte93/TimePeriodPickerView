@@ -12,8 +12,8 @@ import UIKit
 class WeekPickerView: BasePickerView {
     public var weekData = Array<(Int, Array<((Int), (Int, Int, Int), (Int, Int, Int))>)>()
     
-    override init(frame: CGRect, config: SKPickerConfiguration? = nil) {
-        super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .WEEK) : config)!)
+    override init(config: SKPickerConfiguration? = nil) {
+        super.init(config: (config == nil ? SKPickerConfiguration(type: .WEEK) : config)!)
         delegate = self
         dataSource = self
         calculateWeek()

@@ -8,33 +8,11 @@
 
 import UIKit
 
-class SKSingleDateToolView: SKToolView {
+class SKSingleDateToolView: SKLeftAndRightToolView {
     
     ///
-    fileprivate lazy var leftButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(configuration.leftTitle, for: .normal)
-        button.setTitleColor(configuration.leftColor, for: .normal)
-        button.titleLabel?.font = configuration.leftFont
-        button.addTarget(self, action: #selector(leftButtonEvent), for: .touchUpInside)
-        return button
-    }()
-    
-    ///
-    fileprivate lazy var rightButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(configuration.rightTitle, for: .normal)
-        button.setTitleColor(configuration.rightColor, for: .normal)
-        button.titleLabel?.font = configuration.rightFont
-        button.addTarget(self, action: #selector(rightButtonEvent), for: .touchUpInside)
-        return button
-    }()
-    
-    ///
-    lazy var currentDate: UILabel = {
-        let leftWidth = configuration.isExchangeToolButton ? leftButton.bounds.width : rightButton.bounds.width
-        let rightWidth = configuration.isExchangeToolButton ? rightButton.bounds.width : leftButton.bounds.width
-        let label = UILabel(frame: CGRect(x: leftWidth + 10, y: 0, width: kScreenW - rightWidth - leftWidth - 20, height: bounds.height))
+    fileprivate lazy var currentDate: UILabel = {
+        let label = UILabel()
         label.textAlignment = .center
         label.font = configuration.selecteTimeFont
         label.textColor = configuration.selecteTimeColor
@@ -42,16 +20,12 @@ class SKSingleDateToolView: SKToolView {
     }()
     
     ///
-    public init(config: SKToolViewConfiguration) {
-        super.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 44))
-        
-        configuration = config
-        makeLeftAndRightButton(configuration.isExchangeToolButton)
+    override init(config: SKToolViewConfiguration) {
+        super.init(config: config)
+        makeLeftAndRightButton()
         backgroundColor = configuration.background
         
-        addSubview(leftButton)
-        addSubview(rightButton)
-        if configuration.isShowSelecteTime { addSubview(currentDate) }
+        if configuration.isShowSelecteTime { addCurrentDateConstraints() }
         
         self.selectedBlock = { (type, pickerIndex, startTime, endTime) in
             let start = Date(year: startTime.0, month: startTime.1, day: startTime.2).format(with: self.configuration.selecteTimeFormat)
@@ -60,30 +34,18 @@ class SKSingleDateToolView: SKToolView {
         }
     }
     
+    func addCurrentDateConstraints() {
+        addSubview(currentDate)
+        currentDate.translatesAutoresizingMaskIntoConstraints = false
+        addConstraints([NSLayoutConstraint(item: currentDate, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: currentDate, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: currentDate, attribute: .left, relatedBy: .equal, toItem: leftButton, attribute: .right, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: currentDate, attribute: .right, relatedBy: .equal, toItem: rightButton, attribute: .left, multiplier: 1.0, constant: 0),])
+    }
+    
     ///
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    ///
-    fileprivate func makeLeftAndRightButton(_ bool: Bool) {
-        if !bool {
-            leftButton.frame = configuration.leftFrame
-            rightButton.frame = configuration.rightFrame
-        }else {
-            leftButton.frame = configuration.rightFrame
-            rightButton.frame = configuration.leftFrame
-        }
-    }
-    
-    ///
-    @objc func rightButtonEvent() {
-        hidenPeriodTimeView()
-    }
-    
-    ///
-    @objc func leftButtonEvent() {
-        hidenPeriodTimeView()
     }
     
 }

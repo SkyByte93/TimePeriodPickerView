@@ -11,8 +11,9 @@ class DefaultStyleViewController: BaseViewController {
     var picker: SKDatePeriodPickerView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        addShowButton()
-        addShowTimeLabel()
+        addDisplayButton()
+        addDisplayTimeLabel()
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.showPickerView(UIButton())
         }

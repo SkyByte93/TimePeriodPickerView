@@ -9,32 +9,11 @@ import UIKit
 import Foundation
 let TextChangeAnimated = 0.5
 
-class SKDatePeriodToolView: SKToolView {
-    
+class SKDatePeriodToolView: SKLeftAndRightToolView {
     ///
     public var selectedIndex: Int = 0 {
         willSet { animationChnage(index: newValue) }
     }
-    
-    ///
-    fileprivate lazy var leftButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(configuration.leftTitle, for: .normal)
-        button.setTitleColor(configuration.leftColor, for: .normal)
-        button.titleLabel?.font = configuration.leftFont
-        button.addTarget(self, action: #selector(leftButtonEvent), for: .touchUpInside)
-        return button
-    }()
-    
-    ///
-    fileprivate lazy var rightButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(configuration.rightTitle, for: .normal)
-        button.setTitleColor(configuration.rightColor, for: .normal)
-        button.titleLabel?.font = configuration.rightFont
-        button.addTarget(self, action: #selector(rightButtonEvent), for: .touchUpInside)
-        return button
-    }()
     
     ///
     fileprivate func setTypeButton(_ item: inout DateTypeModel, selected: Bool) {
@@ -67,41 +46,15 @@ class SKDatePeriodToolView: SKToolView {
     }
     
     ///
-    @objc func rightButtonEvent() {
-        hidenPeriodTimeView()
-    }
-    
-    ///
-    @objc func leftButtonEvent() {
-        hidenPeriodTimeView()
-    }
-    
-    ///
-    fileprivate func makeLeftAndRightButton(_ bool: Bool) {
-        if !bool {
-            leftButton.frame = configuration.leftFrame
-            rightButton.frame = configuration.rightFrame
-        }else {
-            leftButton.frame = configuration.rightFrame
-            rightButton.frame = configuration.leftFrame
-        }
-    }
-    
-    ///
     public init(types: Array<SKPeriodType>, config: SKToolViewConfiguration) {
-        super.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: 44))
+        super.init(config: config)
         
-        configuration = config
-        makeLeftAndRightButton(configuration.isExchangeToolButton)
+        makeLeftAndRightButton()
         backgroundColor = configuration.background
-        
-        addSubview(leftButton)
-        addSubview(rightButton)
         
         makeTypeItem(types)
         
         self.selectedBlock = { (type, pickerIndex, start, end) in
-            
         }
     }
     
@@ -131,9 +84,6 @@ class SKDatePeriodToolView: SKToolView {
             case .MONTH: button.setTitle("月", for: .normal)
             case .WEEK: button.setTitle("周", for: .normal)
             case .DAY: button.setTitle("天", for: .normal)
-            case .HOUR: button.setTitle("小时", for: .normal)
-            case .MINUTE: button.setTitle("分", for: .normal)
-            case .SECOND: break
             }
             
             array.append(DateTypeModel(isSelected: selectedIndex == index, index: index,type: item, button: button))
@@ -143,11 +93,69 @@ class SKDatePeriodToolView: SKToolView {
     
     /// 添加类型日期选项按钮到toolView上
     fileprivate func addTypesButtonToToolView() {
-        let totalWidth = typesBtnArr.count * 60
-        for (index, item) in typesBtnArr.enumerated() {
-            item.button.frame = CGRect(x: (Int(kScreenW) - totalWidth) / 2 + (60 * index), y: 0, width: 60, height: 44)
+        for item in typesBtnArr {
             addSubview(item.button)
         }
+        addMedianTypesButtonConstraints()
+    }
+    
+    func addMedianTypesButtonConstraints() {
+        guard typesBtnArr.count > 0 else { return }
+        if typesBtnArr.count % 2 == 0 {
+            let median = Int(typesBtnArr.count / 2)
+            let previousMedian = typesBtnArr[median - 1].button!
+            let lastMedian = typesBtnArr[median].button!
+            
+            //left
+            previousMedian.translatesAutoresizingMaskIntoConstraints = false
+            addConstraint(NSLayoutConstraint(item: previousMedian, attribute: .right, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0))
+            addTypesButtonConstraints(button: previousMedian)
+            
+            //right
+            lastMedian.translatesAutoresizingMaskIntoConstraints = false
+            addConstraint(NSLayoutConstraint(item: lastMedian, attribute: .left, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0))
+            addTypesButtonConstraints(button: lastMedian)
+            
+            var internalNumber = 0
+            while median - internalNumber - 2 >= 0 {
+                addLeftTypesButtonConstraints(last: typesBtnArr[median - internalNumber - 1].button, current: typesBtnArr[median - internalNumber - 2].button)
+                addRightTypesButtonConstraints(last: typesBtnArr[median + internalNumber].button, current: typesBtnArr[median + internalNumber + 1].button)
+                internalNumber += 1
+            }
+        }else {
+            let median = Int(typesBtnArr.count / 2)
+            let centerMedian = typesBtnArr[median].button!
+            
+            // center
+            centerMedian.translatesAutoresizingMaskIntoConstraints = false
+            addConstraint(NSLayoutConstraint(item: centerMedian, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0))
+            addTypesButtonConstraints(button: centerMedian)
+            
+            var internalNumber = 1
+            while median - internalNumber >= 0 {
+                addLeftTypesButtonConstraints(last: typesBtnArr[median - internalNumber + 1].button, current: typesBtnArr[median - internalNumber].button)
+                addRightTypesButtonConstraints(last: typesBtnArr[median + internalNumber - 1].button, current: typesBtnArr[median + internalNumber].button)
+                internalNumber += 1
+            }
+        }
+    }
+    
+    func addTypesButtonConstraints(button: UIButton) {
+        addConstraints([NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: button, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 60)])
+    }
+    
+    func addLeftTypesButtonConstraints(last: UIButton, current: UIButton) {
+        current.translatesAutoresizingMaskIntoConstraints = false
+        addConstraint(NSLayoutConstraint(item: current, attribute: .right, relatedBy: .equal, toItem: last, attribute: .left, multiplier: 1.0, constant: 0))
+        addTypesButtonConstraints(button: current)
+    }
+    
+    func addRightTypesButtonConstraints(last: UIButton, current: UIButton) {
+        current.translatesAutoresizingMaskIntoConstraints = false
+        addConstraint(NSLayoutConstraint(item: current, attribute: .left, relatedBy: .equal, toItem: last, attribute: .right, multiplier: 1.0, constant: 0))
+        addTypesButtonConstraints(button: current)
     }
     
     ///

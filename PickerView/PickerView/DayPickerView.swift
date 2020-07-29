@@ -12,8 +12,8 @@ import UIKit
 class DayPickerView: BasePickerView {
     private var dayDate = Array<(Int, Array<(Int, Array<Int>)>)>()
     
-    override init(frame: CGRect, config: SKPickerConfiguration? = nil) {
-        super.init(frame: frame, config: (config == nil ? SKPickerConfiguration(type: .DAY) : config)!)
+    override init(config: SKPickerConfiguration? = nil) {
+        super.init(config: (config == nil ? SKPickerConfiguration(type: .DAY) : config)!)
         delegate = self
         dataSource = self
         calculateDay()
@@ -65,9 +65,9 @@ class DayPickerView: BasePickerView {
     ///
     lazy var fixedMode: Void = {
         guard let view = self.subviews.filter({ $0.bounds.height < 100 }).first else { return }
-        view.addSubview(makeFiexdLable(total: 3, index: 0, text: "年", color: config.selectColor, font: config.selectFont))
-        view.addSubview(makeFiexdLable(total: 3, index: 1, text: "月", color: config.selectColor, font: config.selectFont))
-        view.addSubview(makeFiexdLable(total: 3, index: 2, text: "日", color: config.selectColor, font: config.selectFont))
+        makeFiexdLable(subview: view, total: 3, index: 0, text: "年")
+        makeFiexdLable(subview: view, total: 3, index: 1, text: "月")
+        makeFiexdLable(subview: view, total: 3, index: 2, text: "日")
     }()
 }
 
@@ -131,6 +131,7 @@ extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
                 view.backgroundColor = config.splitLimitColor
             }
         }
+        
         // 修改字体样式
         var pickerLabel = view as? UILabel
         if pickerLabel == nil { pickerLabel = UILabel() }

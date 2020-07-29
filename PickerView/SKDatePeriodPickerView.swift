@@ -5,14 +5,11 @@
 //  Created by jetson on 2019/10/15.
 //  Copyright © 2019 jetson. All rights reserved.
 
-@available(iOS 11.0, *)
-let bottomSafeAreaHeight = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0.0
 
 let kScreenW = UIScreen.main.bounds.size.width
 let kScreenH = UIScreen.main.bounds.size.height
 
 import UIKit
-
 /// (Int, Int, Int) (年，月，日)
 typealias SKPeriodDate = (Int, Int, Int)
 
@@ -24,17 +21,19 @@ class SKDatePeriodPickerView: UIView {
     public weak var delegate: SKDatePeriodDateDelegate?
     
     /// 尺寸
-    public var backgroundFrame: CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height) {
+    public var shadeFrame: CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height) {
         willSet { frame = newValue }
     }
     
-    /// 主要页面尺寸
-    public var mainFrame: CGRect = CGRect(x: 0, y: kScreenH - 400, width: kScreenW, height: 400) {
-        willSet { mainView.frame = newValue }
+    /// 主要页面高度
+    public var mainViewHeight: CGFloat = 40 + bottomSafeArea + 216 {
+        willSet {
+            mainViewHeightConstraint.constant = newValue
+        }
     }
     
-    ///
-    public var mainBackground: UIColor = .color(default: .white, darkMode: .black) {
+    /// 主要页面颜色
+    public var mainBackground: UIColor = .color(light: .white, dark: .black) {
         willSet { mainView.backgroundColor = newValue }
     }
     
@@ -77,25 +76,22 @@ class SKDatePeriodPickerView: UIView {
         }
     }
     ///
+    private var mainViewBottomConstraint: NSLayoutConstraint!
+    
+    private var mainViewHeightConstraint: NSLayoutConstraint!
+    ///
     private(set) var toolView: SKToolView!
     ///
     private var pickerArr = Array<PickerViewModel>()
     ///
     fileprivate lazy var mainView: UIView = {
-        let view = UIView(frame: mainFrame)
+        let view = UIView()
         view.backgroundColor = mainBackground
         return view
     }()
     ///
     fileprivate lazy var scroll: UIScrollView = {
-        var height: CGFloat = 0
-        if #available(iOS 11.0, *) {
-            height = mainView.bounds.height - toolView.bounds.height - bottomSafeAreaHeight
-        }else {
-            height = mainView.bounds.height - toolView.bounds.height
-        }
-        
-        let view = UIScrollView(frame: CGRect(x: 0, y: toolView.bounds.height, width: kScreenW, height: height))
+        let view = UIScrollView()
         view.isPagingEnabled = true
         view.bounces = false
         view.backgroundColor = mainBackground
@@ -104,85 +100,166 @@ class SKDatePeriodPickerView: UIView {
         view.delegate = self
         return view
     }()
-    ///
-    fileprivate lazy var gesture: UIGestureRecognizer = {
-        let gesture = UIGestureRecognizer(target: self, action: #selector(hidenView))
-        return gesture
-    }()
+    
     ///
     public init(types: Array<SKPeriodType>,
                 frame: CGRect? = nil,
                 toolConfig toolConfigration: SKToolViewConfiguration? = nil,
                 pickerConfig pickerConfiguration: Array<SKPickerConfiguration>? = nil) {
         
-        guard let frame = (frame == nil ? backgroundFrame : frame) else { super.init(frame: .zero); return }
+        guard let frame = (frame == nil ? shadeFrame : frame) else {
+            super.init(frame: .zero)
+            return
+        }
         super.init(frame: frame)
         
         backgroundColor = shadeBackground
+        
+        isUserInteractionEnabled = true
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissEvent)))
+        
         toolView = toolView(types: types, config: toolConfigration)
-        #warning("点击手势出现问题, 响应链出现问题, 后期优化")
-//        addGestureRecognizer(gesture)
         
         addSubview(mainView)
+        mainViewAddConstrains()
+        
         mainView.addSubview(toolView)
+        toolViewAddConstrains()
+        
         mainView.addSubview(scroll)
+        scrollAddConstrains()
+        
+        mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noEvent)))
         
         ///
-        makePickerView(types: types, pickerArr: &pickerArr, config: pickerConfiguration)
+        makePickerView(types: types, config: pickerConfiguration)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDeviceOrientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
         pickerViewAddMainView()
     }
     
+    @objc func onDeviceOrientationDidChange() {
+        switch UIDevice.current.orientation {
+        case .portrait:
+            scroll.contentSize = CGSize(width: scroll.bounds.width * CGFloat(pickerArr.count), height: 216)
+//            for (index, item) in pickerArr.enumerated() where item.isSelected {
+//                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
+//            }
+            mainViewHeight = 40 + bottomSafeArea + 216
+        case .landscapeLeft, .landscapeRight:
+            scroll.contentSize = CGSize(width: scroll.bounds.width * CGFloat(pickerArr.count), height: 162)
+//            for (index, item) in pickerArr.enumerated() where item.isSelected {
+//                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
+//            }
+            mainViewHeight = 40 + bottomSafeArea + 162
+        default: break
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func getMainViewDefaultHeight() -> CGFloat {
+        switch UIDevice.current.orientation {
+        case .portrait:
+            return 40 + bottomSafeArea + 216
+        case .landscapeLeft, .landscapeRight:
+            return 40 + bottomSafeArea + 162
+        default:
+            return 40 + bottomSafeArea + 216
+        }
+    }
+    
+    
+    func mainViewAddConstrains() {
+        mainView.translatesAutoresizingMaskIntoConstraints = false
+        mainViewBottomConstraint = NSLayoutConstraint(item: mainView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)
+        mainViewHeightConstraint = NSLayoutConstraint(item: mainView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: getMainViewDefaultHeight())
+        addConstraints([NSLayoutConstraint(item: mainView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0),
+                        NSLayoutConstraint(item: mainView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0),
+                        mainViewHeightConstraint, mainViewBottomConstraint])
+    }
+    
+    func toolViewAddConstrains() {
+        toolView.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addConstraints([NSLayoutConstraint(item: toolView, attribute: .left, relatedBy: .equal, toItem: mainView, attribute: .left, multiplier: 1.0, constant: 0),
+                                 NSLayoutConstraint(item: toolView, attribute: .right, relatedBy: .equal, toItem: mainView, attribute: .right, multiplier: 1.0, constant: 0),
+                                 NSLayoutConstraint(item: toolView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 40),
+                                 NSLayoutConstraint(item: toolView, attribute: .top, relatedBy: .equal, toItem: mainView, attribute: .top, multiplier: 1.0, constant: 0)])
+    }
+    
+    func scrollAddConstrains() {
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        mainView.addConstraints([NSLayoutConstraint(item: scroll, attribute: .left, relatedBy: .equal, toItem: mainView, attribute: .left, multiplier: 1.0, constant: 0),
+                                 NSLayoutConstraint(item: scroll, attribute: .right, relatedBy: .equal, toItem: mainView, attribute: .right, multiplier: 1.0, constant: 0),
+                                 NSLayoutConstraint(item: scroll, attribute: .top, relatedBy: .equal, toItem: toolView, attribute: .bottom, multiplier: 1.0, constant: 0),
+                                 NSLayoutConstraint(item: scroll, attribute: .bottom, relatedBy: .equal, toItem: mainView, attribute: .bottom, multiplier: 1.0, constant: 0)])
+    }
+    
+    @objc func dismissEvent() {
+        animationedHiden()
+    }
+    
+    @objc func noEvent() {}
     ///
-    func makePickerView(types: Array<SKPeriodType>, pickerArr: inout Array<PickerViewModel>, config: Array<SKPickerConfiguration>?) {
-        scroll.contentSize = CGSize(width: kScreenW * CGFloat(types.count), height: scroll.bounds.height)
-        scroll.contentOffset = CGPoint(x: Int(kScreenW) * selectedIndex, y: 0)
+    func makePickerView(types: Array<SKPeriodType>, config: Array<SKPickerConfiguration>?) {
+        scroll.contentSize = CGSize(width: bounds.width * CGFloat(types.count), height: 216)
+        scroll.contentOffset = CGPoint(x: Int(bounds.width) * selectedIndex, y: 0)
         
         for (index, item) in types.enumerated() {
-            let frame = CGRect(x: kScreenW * CGFloat(index), y: 0, width: scroll.bounds.width, height: scroll.bounds.height)
             let config = config == nil ? nil : config![index]
             let isSelecte = selectedIndex == index
             switch item {
             case .DAY:
-                pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(frame: frame, config: config), isSelected: isSelecte))
+                pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(config: config), isSelected: isSelecte))
             case .WEEK:
-                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(frame: frame, config: config),isSelected: isSelecte))
+                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(config: config),isSelected: isSelecte))
             case .MONTH:
-                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(frame: frame, config: config), isSelected: isSelecte))
-            case .MINUTE:
-                break
-            case .HOUR:
-                break
-            case .SECOND:
-                break
+                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(config: config), isSelected: isSelecte))
             }
         }
     }
     
     ///
-    func dayPickerView(frame: CGRect, config: SKPickerConfiguration?) -> DayPickerView {
-        let pickerView = DayPickerView.init(frame: frame, config: config)
+    func dayPickerView(config: SKPickerConfiguration?) -> DayPickerView {
+        let pickerView = DayPickerView(config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
     ///
-    func weekPickerView(frame: CGRect, config: SKPickerConfiguration?) -> WeekPickerView {
-        let pickerView = WeekPickerView(frame: frame, config: config)
+    func weekPickerView(config: SKPickerConfiguration?) -> WeekPickerView {
+        let pickerView = WeekPickerView(config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
     ///
-    func monthPickerView(frame: CGRect, config: SKPickerConfiguration?) -> MonthPickerView {
-        let pickerView = MonthPickerView(frame: frame, config: config)
+    func monthPickerView(config: SKPickerConfiguration?) -> MonthPickerView {
+        let pickerView = MonthPickerView(config: config)
         pickerView.periodDelegate = self
         return pickerView
     }
     
     ///
     func pickerViewAddMainView() {
-        for item in pickerArr {
+        for (index, item) in pickerArr.enumerated() {
             scroll.addSubview(item.pickerView)
+            let lastPickerView: UIPickerView? = index >= 1 ? pickerArr[index - 1].pickerView : nil
+            pickerViewAddConstraints(lastPickerView: lastPickerView, pickerView: item.pickerView)
+        }
+    }
+    
+    func pickerViewAddConstraints(lastPickerView: UIPickerView?, pickerView: UIPickerView) {
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        scroll.addConstraints([NSLayoutConstraint(item: pickerView, attribute: .top, relatedBy: .equal, toItem: scroll, attribute: .top, multiplier: 1.0, constant: 0),
+                               NSLayoutConstraint(item: pickerView, attribute: .width, relatedBy: .equal, toItem: scroll, attribute: .width, multiplier: 1.0, constant: 0)])
+        if let last = lastPickerView {
+            scroll.addConstraint(NSLayoutConstraint(item: pickerView, attribute: .left, relatedBy: .equal, toItem: last, attribute: .right, multiplier: 1.0, constant: 0))
+        }else {
+            scroll.addConstraint(NSLayoutConstraint(item: pickerView, attribute: .left, relatedBy: .equal, toItem: scroll, attribute: .left, multiplier: 1.0, constant: 0))
         }
     }
     
@@ -205,11 +282,6 @@ class SKDatePeriodPickerView: UIView {
     }
     
     ///
-    @objc func hidenView() {
-        animationedHiden()
-    }
-    
-    ///
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -228,11 +300,11 @@ class SKDatePeriodPickerView: UIView {
     
     ///
     func animationedShow() {
-        mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
+        mainViewBottomConstraint.constant = -mainViewHeight
         backgroundColor = .clear
         isHidden = false
         UIView.animate(withDuration: 0.3) {
-            self.mainView.frame = self.mainFrame
+            self.mainViewBottomConstraint.constant = 0
             self.backgroundColor = self.shadeBackground
         }
     }
@@ -240,7 +312,7 @@ class SKDatePeriodPickerView: UIView {
     ///
     func animationedHiden() {
         UIView.animate(withDuration: 0.3, animations: {
-            self.mainView.frame = CGRect(x: 0, y: kScreenH, width: kScreenW, height: 400)
+            self.mainViewBottomConstraint.constant = -self.mainViewHeight
             self.backgroundColor = .clear
         }) { (bool) in
             #warning("在lazy加载一次后, 再次添加到view上, 由于DatePeriodPickerView被删除, 不能进行添加, 后期优化")
@@ -253,6 +325,7 @@ class SKDatePeriodPickerView: UIView {
 
 extension SKDatePeriodPickerView:UIScrollViewDelegate, SKToolViewProtocol, SKDatePeriodPickerViewDelegate {
     
+    ///
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let index = (scrollView.contentOffset.x / scroll.bounds.width)
         let intIndex = round(index)
@@ -265,7 +338,7 @@ extension SKDatePeriodPickerView:UIScrollViewDelegate, SKToolViewProtocol, SKDat
     
     ///
     fileprivate func changeCurrentTime(index: Int) {
-        guard index >= 0 && index < pickerArr.count  else { return }
+        guard index >= 0 && index < pickerArr.count else { return }
         let model = pickerArr[index]
         if let picker = model.pickerView as? BasePickerView {
             let start: (Int, Int, Int) = (picker.currentPeriod.0.year, picker.currentPeriod.0.month, picker.currentPeriod.0.day)
@@ -278,6 +351,7 @@ extension SKDatePeriodPickerView:UIScrollViewDelegate, SKToolViewProtocol, SKDat
         }
     }
     
+    ///
     func pickerView(pickerView: UIPickerView, type: SKPeriodType, start: SKPeriodDate, end: SKPeriodDate) {
         guard pickerArr.count > selectedIndex else { return }
         if pickerArr.count == 1 || pickerView == pickerArr[selectedIndex].pickerView {

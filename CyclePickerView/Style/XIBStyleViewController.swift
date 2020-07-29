@@ -15,7 +15,6 @@ class XIBStyleViewController: BaseViewController {
     @IBOutlet weak var segment: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     

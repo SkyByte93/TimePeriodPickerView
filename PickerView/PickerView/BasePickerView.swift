@@ -25,8 +25,8 @@ class BasePickerView: UIPickerView {
         endTime = config.timeLimit.0 < config.timeLimit.1 ? config.timeLimit.1 : config.timeLimit.0
     }
     
-    init(frame: CGRect, config: SKPickerConfiguration) {
-        super.init(frame: frame)
+    init(config: SKPickerConfiguration) {
+        super.init(frame: .zero)
         self.config = config
         startAndEndJudge()
     }

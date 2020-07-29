@@ -10,11 +10,11 @@ import Foundation
 
 enum SKPeriodType {
     /// 秒
-    case SECOND
+//    case SECOND
     /// 分钟
-    case MINUTE
+//    case MINUTE
     /// 小时
-    case HOUR
+//    case HOUR
     /// 天
     case DAY
     /// 周

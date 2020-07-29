@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SKPickerConfiguration {
+struct SKPickerConfiguration {
     /// 自动选中当前日期, 默认当前日期, 为nil时不自动选中
     var selecteDate: Date? = Date()
     /// 自动选中动画
@@ -17,11 +17,11 @@ class SKPickerConfiguration {
     /// 时间范围
     var timeLimit: (Date, Date)!
     ///
-    var selectColor: UIColor = .color(default: .red, darkMode: .red)
+    var selectColor: UIColor = .color(light: .red, dark: .red)
     ///
     var selectFont: UIFont = .systemFont(ofSize: 18)
     ///
-    var normalColor: UIColor = .color(default: .white, darkMode: .white)
+    var normalColor: UIColor = .color(light: .white, dark: .white)
     ///
     var normalFont: UIFont = .systemFont(ofSize: 18)
     
@@ -35,7 +35,7 @@ class SKPickerConfiguration {
     var showMode: SKShowMode = .fixed
     
     /// iOS13.0及以下有效
-    var splitLimitColor: UIColor = .color(default: .lightGray, darkMode: .lightGray)
+    var splitLimitColor: UIColor = .color(light: .lightGray, dark: .lightGray)
     /// iOS13.0及以下有效
     var splitLimitHeight: CGFloat = 1
     /// iOS13.0及以下有效
@@ -49,9 +49,6 @@ class SKPickerConfiguration {
         case .DAY: break
         case .WEEK: break
         case .MONTH: break
-        case .MINUTE: break
-        case .HOUR: break
-        case .SECOND: break
         }
     }
     

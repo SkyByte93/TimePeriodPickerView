@@ -22,8 +22,8 @@ class SKToolView: UIView {
     /// 选中block回调
     var selectedBlock: SelecteBlock?
     
-    init(frame: CGRect, config: SKToolViewConfiguration) {
-        super.init(frame: frame)
+    init(config: SKToolViewConfiguration) {
+        super.init(frame: .zero)
         configuration = config
     }
     
@@ -38,16 +38,4 @@ class SKToolView: UIView {
     final func hidenPeriodTimeView() {
         if let delegate = delegate { delegate.hidenTimePeriod() }
     }
-    
-    ///
-//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        guard isUserInteractionEnabled || !isHidden || !(alpha <= 0.01) else { return nil }
-//        /// 遍历图层
-//        for subview in subviews.reversed() {
-//            let convertedPoint = subview.convert(point, from: self)
-//            let hitTestView = subview.hitTest(convertedPoint, with: event)
-//            if let view = hitTestView { return view }
-//        }
-//        return nil
-//    }
 }

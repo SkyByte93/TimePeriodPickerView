@@ -35,7 +35,8 @@ class SKTimePeriodTableView: UITableViewController {
         super.viewDidLoad()
         title = "时间周期选择器"
         
-        tableView(UITableView(), didSelectRowAt: IndexPath(row: 3, section: 0))
+        tableView(UITableView(), didSelectRowAt: IndexPath(row: 0, section: 0))
+        
     }
 
     // MARK: - Table view data source
