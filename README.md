@@ -1,7 +1,5 @@
 ### TimePeriodPickerView
 
-### 依赖
-手动导入[DateTools](https://github.com/MatthewYork/DateTools)
 ### 功能实现
 - [ ] 可以选择年, 月, 日, 时, 分周期.
 - [ ] 适配Storyboard, XIB.
@@ -79,6 +77,7 @@ func SKPeriod(periodView: SKDatePeriodPickerView, timeType: SKPeriodType, start:
 
 `order`: PickerView显示时间时间顺序参数(enum:`SKPeriodOrder`) , 默认Asc.
 
+
 ```
 enum SKPeriodOrder {
     /// 升序
@@ -97,15 +96,11 @@ enum SKPeriodOrder {
 
 `isExchangeToolButton`: 是否交换左边、右边按钮.
 
-`leftFrame`:左边按钮Frame.
-
 `leftTitle`:左边按钮文字设置, 默认`取消`.
 
 `leftFont`: 左边按钮字体样式, 默认系统加粗字体16.
 
 `leftColor`: 左边按钮字体颜色, 默认lightMode: lightGray, DarkMode: lightGray.
-
-`rightFrame`: 右边按钮Frame.
 
 `rightTitle`: 右边按钮文字设置, 默认`确定`.
 
@@ -139,7 +134,7 @@ enum SKPeriodOrder {
 
 `backgroundFrame`: 遮罩层尺寸, 主要默认是使用在底部弹窗模式中, 默认全屏尺寸, 覆盖安全区域.
 
-`mainFrame`: 显示PickerView尺寸, 包括ToolView尺寸, 默认高度:400, 宽度:屏幕宽度.
+`mainViewHeight`: 总体弹窗高度.
 
 `mainBackground`: 显示PickerView颜色, 默认lightMode: white, DarkMode: black.
 
@@ -153,9 +148,9 @@ enum SKPeriodOrder {
 
 `isAdaptiveDrakMode`: 是否适配暗黑模式, 默认适配.
 
-`periodStartTime`: 周期时间周期开始时间, 可以在多个PickerView需要显示的时候统一配置, 此配置后`timeLimit`配置将无效.
+`periodStartTime`: 周期时间周期开始时间, 可以在多个PickerView需要显示的时候统一配置, 此配置后`timeLimit`无效.
 
-`periodEndTime`: 显示时间周期结束时间, 可以在多个PickerView需要显示的时候统一配置, 此配置后`timeLimit`配置将无效.
+`periodEndTime`: 显示时间周期结束时间, 可以在多个PickerView需要显示的时候统一配置, 配置后`timeLimit`无效.
 
-`customerToolView`: 如果自定工具栏, 请赋值给此.
+`customerToolView`: 可以自定工具栏.
 
