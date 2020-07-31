@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17140" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17115"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,9 +16,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iwm-Lc-g1Y">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iwm-Lc-g1Y" customClass="SKDatePeriodPickerView" customModule="CyclePickerView" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="562" width="414" height="300"/>
-                        <color key="backgroundColor" systemColor="systemFillColor" red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemFillColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="300" id="N3e-WU-KRJ"/>
                         </constraints>
@@ -25,17 +26,17 @@
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lGK-uw-Blp">
                         <rect key="frame" x="20" y="128" width="374" height="38"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raz-hV-Tg1">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raz-hV-Tg1">
                                 <rect key="frame" x="0.0" y="0.0" width="187" height="38"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" title="添加">
-                                    <color key="titleColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemGrayColor"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LV4-qP-Fce">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LV4-qP-Fce">
                                 <rect key="frame" x="187" y="0.0" width="187" height="38"/>
                                 <state key="normal" title="删除">
-                                    <color key="titleColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemGrayColor"/>
                                 </state>
                             </button>
                         </subviews>
@@ -60,7 +61,8 @@
                         </segments>
                     </segmentedControl>
                 </subviews>
-                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                <viewLayoutGuide key="safeArea" id="UVe-GF-98q"/>
+                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
                     <constraint firstItem="UVe-GF-98q" firstAttribute="bottom" secondItem="Iwm-Lc-g1Y" secondAttribute="bottom" id="6aX-gl-PwV"/>
                     <constraint firstItem="Iwm-Lc-g1Y" firstAttribute="leading" secondItem="UVe-GF-98q" secondAttribute="leading" id="A9B-8r-97Q"/>
@@ -75,15 +77,26 @@
                     <constraint firstItem="Iwm-Lc-g1Y" firstAttribute="top" secondItem="Inh-iJ-5rF" secondAttribute="bottom" constant="20" id="qYO-cA-1pW"/>
                     <constraint firstItem="zUV-WM-5Xq" firstAttribute="leading" secondItem="UVe-GF-98q" secondAttribute="leading" constant="20" id="yYp-nX-rVM"/>
                 </constraints>
-                <viewLayoutGuide key="safeArea" id="UVe-GF-98q"/>
             </view>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
             <connections>
                 <outlet property="add" destination="raz-hV-Tg1" id="IkD-fw-M3d"/>
+                <outlet property="periodPickerView" destination="Iwm-Lc-g1Y" id="jK4-pL-L6L"/>
                 <outlet property="remove" destination="LV4-qP-Fce" id="wGK-Gg-61H"/>
                 <outlet property="segment" destination="zUV-WM-5Xq" id="cpJ-69-Y1f"/>
             </connections>
-            <point key="canvasLocation" x="-339" y="7"/>
+            <point key="canvasLocation" x="-475" y="-163"/>
         </viewController>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

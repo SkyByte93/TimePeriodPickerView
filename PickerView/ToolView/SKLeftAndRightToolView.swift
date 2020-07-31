@@ -35,22 +35,20 @@ class SKLeftAndRightToolView: SKToolView {
     public func makeLeftAndRightButton() {
         addLeftButtonConstraints()
         addRightButtonConstraints()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(onDeviceOrientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
-    ///
+    /// event is right button
     @objc func rightButtonEvent() {
         hidenPeriodTimeView()
     }
     
-    ///
+    /// event is left button
     @objc func leftButtonEvent() {
         hidenPeriodTimeView()
     }
     
-    
-    
+    /// listen device orientation change
     @objc fileprivate func onDeviceOrientationDidChange() {
         switch UIDevice.current.orientation {
         case .portrait:
@@ -91,14 +89,17 @@ class SKLeftAndRightToolView: SKToolView {
                         NSLayoutConstraint(item: rightButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 60)])
     }
     
+    ///
     fileprivate func getLeftButtonDefaultSafe() -> CGFloat {
         return UIDevice.current.orientation == .landscapeLeft ? leftSafeArea : 0
     }
     
+    ///
     fileprivate func getRightButtonDefaultSafe() -> CGFloat {
         return UIDevice.current.orientation == .landscapeRight ? -rightSafeArea : 0
     }
     
+    ///
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

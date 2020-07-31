@@ -172,14 +172,14 @@ extension WeekPickerView {
         var weekArr = Array<(Int, (Int, Int, Int), (Int, Int, Int))>()
         for tempWeek in 0...timePeriod.weeks {
             if tempWeek < timePeriod.weeks && tempWeek > 0 {
-                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
-                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek, months: 0, years: 0))
+                let startTime = start.add(TimeChunk(days: integerStartDay, weeks: tempWeek - 1))
+                let endTime = start.add(TimeChunk(days: integerStartDay, weeks: tempWeek))
                 weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (endTime.year, endTime.month, endTime.day)))
             }else if tempWeek == timePeriod.weeks {
-                let startTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: tempWeek - 1, months: 0, years: 0))
+                let startTime = start.add(TimeChunk(days: integerStartDay, weeks: tempWeek - 1))
                 weekArr.append((tempWeek, (startTime.year, startTime.month, startTime.day), (end.year, end.month, end.day)))
             }else if tempWeek == 0 {
-                let endTime = start.add(TimeChunk(seconds: 0, minutes: 0, hours: 0, days: integerStartDay, weeks: 0, months: 0, years: 0))
+                let endTime = start.add(TimeChunk(days: integerStartDay))
                 weekArr.append((tempWeek, (start.year, start.month, start.day), (endTime.year, endTime.month, endTime.day)))
             }
         }

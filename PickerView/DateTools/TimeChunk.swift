@@ -33,7 +33,7 @@ public struct TimeChunk {
     
     public init() {}
     
-    public init(seconds: Int, minutes: Int, hours: Int, days: Int, weeks: Int, months: Int, years: Int) {
+    public init(seconds: Int = 0, minutes: Int = 0, hours: Int = 0, days: Int = 0, weeks: Int = 0, months: Int = 0, years: Int = 0) {
         self.seconds = seconds
         self.minutes = minutes
         self.hours = hours

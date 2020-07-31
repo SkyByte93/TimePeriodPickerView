@@ -35,8 +35,7 @@ class SKTimePeriodTableView: UITableViewController {
         super.viewDidLoad()
         title = "时间周期选择器"
         
-        tableView(UITableView(), didSelectRowAt: IndexPath(row: 0, section: 0))
-        
+        tableView(UITableView(), didSelectRowAt: IndexPath(row: 0, section: 2))
     }
 
     // MARK: - Table view data source
@@ -77,13 +76,13 @@ class SKTimePeriodTableView: UITableViewController {
         }
     }
     
-    fileprivate func pushXIB(vc: BaseViewController,_ indexPath: IndexPath) {
+    fileprivate func pushXIB(vc: UIViewController, _ indexPath: IndexPath) {
         guard let name = datas[indexPath.section].1[indexPath.row].detail else { return }
-        guard let resource = Bundle.main.loadNibNamed(name, owner: nil, options: nil), let xib = resource[0] as? BaseViewController else { return }
+        guard let resource = Bundle.main.loadNibNamed(name, owner: nil, options: nil), let xib = resource[0] as? UIViewController else { return }
         navigationController?.pushViewController(xib, animated: true)
     }
     
-    fileprivate func push(vc: BaseViewController,_ indexPath: IndexPath) {
+    fileprivate func push(vc: BaseViewController, _ indexPath: IndexPath) {
         vc.modalPresentationStyle = .fullScreen
         vc.titleText = datas[indexPath.section].1[indexPath.row].detail
         navigationController?.pushViewController(vc, animated: true)

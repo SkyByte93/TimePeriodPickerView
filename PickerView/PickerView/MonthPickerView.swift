@@ -193,7 +193,7 @@ extension BasePickerView {
         label.textColor = config.selectColor
         label.font = config.selectFont
         
-        let average = (kScreenW / total) * (index + 0.7)
+        let average = (bounds.width / total) * (index + 0.7)
         subview.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false

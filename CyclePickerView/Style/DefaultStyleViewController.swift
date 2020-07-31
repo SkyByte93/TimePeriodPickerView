@@ -21,6 +21,8 @@ class DefaultStyleViewController: BaseViewController {
         let pickerConfig = SKPickerConfiguration(start: Date(timeIntervalSince1970: TimeInterval(10000)), end: Date())
         picker = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], pickerConfig: [pickerConfig, pickerConfig, pickerConfig])
         picker.delegate = self
+        
+        addPickerViewConstraints()
     }
     
     override func showPickerView(_ sender: UIButton) {

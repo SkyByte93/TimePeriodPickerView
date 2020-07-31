@@ -15,7 +15,7 @@ struct SKPickerConfiguration {
     /// 自动选中动画
     var selecteDateAnimation: Bool = true
     /// 时间范围
-    var timeLimit: (Date, Date)!
+    var timeLimit: (Date, Date) = (Date(), Date())
     ///
     var selectColor: UIColor = .color(light: .red, dark: .red)
     ///

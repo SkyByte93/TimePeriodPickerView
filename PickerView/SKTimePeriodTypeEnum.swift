@@ -38,6 +38,14 @@ enum SKShowMode {
     case fixed
 }
 
+/// 显示模式
+enum SKPickerMode {
+    /// 弹窗
+    case popup
+    /// 自定义View
+    case customer
+}
+
 enum YearMode {
     ///
     case yyyy
