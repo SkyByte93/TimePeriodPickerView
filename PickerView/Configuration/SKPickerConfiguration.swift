@@ -32,7 +32,7 @@ struct SKPickerConfiguration {
     /// 显示天格式
     var dayFormat: DayMode = .DD
     /// 显示类型
-    var showMode: SKShowMode = .fixed
+    var showMode: SKShowMode = .suffix
     
     /// iOS13.0及以下有效
     var splitLimitColor: UIColor = .color(light: .lightGray, dark: .lightGray)
@@ -43,18 +43,27 @@ struct SKPickerConfiguration {
     
     /// 显示顺序
     var order: SKPeriodOrder = .Asc
+    /// 只读
+    private(set) var componentNumber: Int!
     
     init(type: SKPeriodType) {
+        self.type = type
         switch type {
-        case .DAY: break
-        case .WEEK: break
-        case .MONTH: break
+        case .DAY: componentNumber = 3
+        case .MONTH: componentNumber = 2
+        case .WEEK: componentNumber = 2
         }
     }
     
     init(start: Date, end: Date) {
         self.timeLimit = (start, end)
     }
+    
+    mutating func setTimeLimit(_ start: Date,_ end: Date) {
+        timeLimit = (start, end)
+    }
+    
+    var type: SKPeriodType!
 }
 
 //class MonthFormat: NSObject {

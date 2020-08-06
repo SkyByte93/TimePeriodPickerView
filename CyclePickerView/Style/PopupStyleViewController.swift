@@ -13,12 +13,19 @@ class PopupStyleViewController: BaseViewController {
         super.viewDidLoad()
         addDisplayButton()
         addDisplayTimeLabel()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.showPickerView(UIButton())
+        }
+        
     }
     
     override func showPickerView(_ sender: UIButton) {
-        let pickerConfig = [dayConfig(), dayConfig(), dayConfig()]
-        let pickerView = SKDatePeriodPickerView(types: [.MONTH, .WEEK, .DAY], toolConfig: ToolViewConfiguration(), pickerConfig: pickerConfig)
+        let pickerView = SKDatePeriodPickerView(types: [.DAY, .MONTH, .WEEK])
+        pickerView.periodTime = PeriodTime(start: Date().subtract(TimeChunk(days: 3, weeks: 3, months: 0, years: 30)),
+                                           end: Date().add(TimeChunk(days: 3, weeks: 3, months: 3, years: 30)))
         pickerView.delegate = self
+        
         SKPickerView = pickerView
         addPickerViewConstraints()
     }
@@ -28,14 +35,6 @@ class PopupStyleViewController: BaseViewController {
         return config
     }
     
-    func dayConfig() -> SKPickerConfiguration {
-        let start = Date().subtract(TimeChunk(days: 3, weeks: 3, months: 0, years: 30))
-        let end = Date().add(TimeChunk(days: 3, weeks: 3, months: 3, years: 30))
-        var dayConfig = SKPickerConfiguration(start: start, end: end)
-        dayConfig.showMode = .fixed
-        dayConfig.order = .Asc
-        return dayConfig
-    }
 }
 
 extension PopupStyleViewController: SKDatePeriodDateDelegate {

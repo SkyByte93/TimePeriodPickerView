@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 struct SKToolViewConfiguration {
-    /*
-     More picker View
-     */
+    
+    /* More picker View */
+    
     /// 工具栏背景色
     public var background: UIColor = .color(light: .white, dark: .black)
     /// 是否交换工具栏左边和右边的按钮
@@ -43,9 +43,8 @@ struct SKToolViewConfiguration {
     ///
     public var normalButtonColor: UIColor = .color(light: .lightGray, dark: .lightGray)
     
-    /*
-     Single picker View
-     */
+    /* Single picker View */
+    
     ///
     public var isShowSelecteTime: Bool = true
     ///

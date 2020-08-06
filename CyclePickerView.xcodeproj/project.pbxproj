@@ -17,7 +17,6 @@
 		367BA03C24B3375A00C7D7EA /* CyclePickerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA03B24B3375A00C7D7EA /* CyclePickerViewTests.swift */; };
 		367BA04924B3378600C7D7EA /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA04624B3378600C7D7EA /* Extension+Date.swift */; };
 		367BA04A24B3378600C7D7EA /* SKDatePeriodPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA04724B3378600C7D7EA /* SKDatePeriodPickerView.swift */; };
-		367BA05A24B33E9B00C7D7EA /* MonthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */; };
 		367BA05C24B33EA900C7D7EA /* DayPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05B24B33EA900C7D7EA /* DayPickerView.swift */; };
 		367BA05E24B33EB300C7D7EA /* WeekPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */; };
 		3693AC6324BBEA7D00FB8E4C /* SKDatePeriodToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693AC6224BBEA7D00FB8E4C /* SKDatePeriodToolView.swift */; };
@@ -53,6 +52,7 @@
 		36C5580F24D01769005501CA /* DateTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C5580E24D01769005501CA /* DateTypeModel.swift */; };
 		36C5582A24D122B8005501CA /* SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C5582924D122B8005501CA /* SafeArea.swift */; };
 		36C5582C24D164E7005501CA /* SKLeftAndRightToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C5582B24D164E7005501CA /* SKLeftAndRightToolView.swift */; };
+		36CF233524DAA06200BB4332 /* DateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CF233424DAA06200BB4332 /* DateModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +80,6 @@
 		367BA03D24B3375A00C7D7EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		367BA04624B3378600C7D7EA /* Extension+Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
 		367BA04724B3378600C7D7EA /* SKDatePeriodPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKDatePeriodPickerView.swift; sourceTree = "<group>"; };
-		367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthPickerView.swift; sourceTree = "<group>"; };
 		367BA05B24B33EA900C7D7EA /* DayPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPickerView.swift; sourceTree = "<group>"; };
 		367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekPickerView.swift; sourceTree = "<group>"; };
 		3693AC6224BBEA7D00FB8E4C /* SKDatePeriodToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKDatePeriodToolView.swift; sourceTree = "<group>"; };
@@ -116,6 +115,7 @@
 		36C5580E24D01769005501CA /* DateTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTypeModel.swift; sourceTree = "<group>"; };
 		36C5582924D122B8005501CA /* SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeArea.swift; sourceTree = "<group>"; };
 		36C5582B24D164E7005501CA /* SKLeftAndRightToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKLeftAndRightToolView.swift; sourceTree = "<group>"; };
+		36CF233424DAA06200BB4332 /* DateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,7 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				367BA05D24B33EB300C7D7EA /* WeekPickerView.swift */,
-				367BA05924B33E9B00C7D7EA /* MonthPickerView.swift */,
 				367BA05B24B33EA900C7D7EA /* DayPickerView.swift */,
 				36A7878824C6730400F225A8 /* BasePickerView.swift */,
 			);
@@ -241,6 +240,7 @@
 			children = (
 				3693AC6A24BD9BDB00FB8E4C /* PickerViewModel.swift */,
 				36C5580E24D01769005501CA /* DateTypeModel.swift */,
+				36CF233424DAA06200BB4332 /* DateModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -409,6 +409,7 @@
 				36A8F31F24BEE07300CE67B7 /* XIBStyleViewController.swift in Sources */,
 				367BA04A24B3378600C7D7EA /* SKDatePeriodPickerView.swift in Sources */,
 				3693AC6324BBEA7D00FB8E4C /* SKDatePeriodToolView.swift in Sources */,
+				36CF233524DAA06200BB4332 /* DateModel.swift in Sources */,
 				36BD7D9924C0270E000F2D63 /* Constants.swift in Sources */,
 				3696ED8E24C5680D00C24F54 /* SKSingleDateToolView.swift in Sources */,
 				364902B124BED8C600A5EC5B /* DefaultFormatViewController.swift in Sources */,
@@ -431,7 +432,6 @@
 				36BD7DA724C0270E000F2D63 /* TimePeriodCollection.swift in Sources */,
 				36BD7DA224C0270E000F2D63 /* Date+Comparators.swift in Sources */,
 				367BA02524B3375600C7D7EA /* AppDelegate.swift in Sources */,
-				367BA05A24B33E9B00C7D7EA /* MonthPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

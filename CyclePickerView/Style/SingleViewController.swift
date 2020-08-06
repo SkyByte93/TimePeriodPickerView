@@ -29,7 +29,7 @@ class SingleViewController: BaseViewController {
         
         SKPickerView = picker
         
-//        addPickerViewConstraints()
+        addPickerViewConstraints()
     }
 }
 

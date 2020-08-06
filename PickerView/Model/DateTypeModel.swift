@@ -17,6 +17,7 @@ class DateTypeModel: Equatable {
     var index: Int!
     var type: SKPeriodType!
     var button: UIButton!
+    
     init(isSelected: Bool, index: Int,type: SKPeriodType,button: UIButton) {
         self.isSelected = isSelected
         self.index = index

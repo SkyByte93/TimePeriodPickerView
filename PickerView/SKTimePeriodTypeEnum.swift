@@ -21,6 +21,8 @@ enum SKPeriodType {
     case WEEK
     /// 月
     case MONTH
+    /// 年
+//    case YEAR
 }
 
 enum SKPeriodOrder {

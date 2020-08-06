@@ -6,60 +6,100 @@
 //  Copyright © 2020 jetson. All rights reserved.
 //
 
+
+
 import Foundation
 import UIKit
 
 class DayPickerView: BasePickerView {
-    private var dayDate = Array<(Int, Array<(Int, Array<Int>)>)>()
+    private var dayDate = DateModel()
     
     override init(config: SKPickerConfiguration? = nil) {
         super.init(config: (config == nil ? SKPickerConfiguration(type: .DAY) : config)!)
         delegate = self
         dataSource = self
-        calculateDay()
-    }
-    
-    fileprivate func calculateDay() {
-        DispatchQueue(label: "background", qos: .background).async {
-            self.dayDate.removeAll()
-            self.calculateDay(start: self.startTime, end: self.endTime)
-        }
-    }
-    
-    fileprivate func currentDate() {
-        let year = dayDate[selectedRow(inComponent: 0)]
-        let month = year.1[selectedRow(inComponent: 1)]
-        let day = month.1[selectedRow(inComponent: 2)]
-        setCurrentPeriod((year.0, month.0, day), (year.0, month.0, day))
-    }
-    
-    fileprivate func autoSeleteIndex() {
-        guard let selected = config.selecteDate, selecteDateNotHave() else { return }
-        for (YIndex, year) in dayDate.enumerated() where selected.year == year.0 {
-            for (MIndex, month) in year.1.enumerated() where selected.month == month.0 {
-                for (DIndex, day) in month.1.enumerated() where selected.day == day {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.location(year: YIndex, month: MIndex, day: DIndex)
-                    }
-                }
-            }
-        }
-    }
-    
-    fileprivate func location(year: Int, month: Int, day: Int) {
-        let animation = config.selecteDateAnimation
-        selectRow(year, inComponent: 0, animated: animation)
-        reloadComponent(1)
-        selectRow(month, inComponent: 1, animated: animation)
-        reloadComponent(2)
-        selectRow(day, inComponent: 2, animated: animation)
-        currentDate()
-        periodDelegate(self, .DAY)
+        reloadDate()
     }
     
     ///
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    fileprivate func currentDayType() {
+        let years = dayDate.years[selectedFrist]
+        let months = years.months[selectedSecond]
+        let day = months.days[selectedThird]
+        setCurrentPeriod((years.year, months.month, day), (years.year, months.month, day))
+    }
+    
+    fileprivate func currentMonthType() {
+        let years = dayDate.years[selectedFrist]
+        let months = years.months[selectedSecond]
+        setCurrentPeriod((years.year, months.month, 1), (years.year, months.month, Date().getDaysInMonth(year: years.year, month: months.month)))
+    }
+    
+    /// 计算定位位置
+    fileprivate func autoSeleteIndex() {
+        guard let year = autoSelecteYear() else { return }
+        guard let month = autoSelecteMonth(year: year.1) else { return }
+        var day: Int? = nil
+        if config.type == .DAY { day = autoSelecteDay(month: month.1)?.0 }
+        location(year: year.0, month: month.0, day: day)
+    }
+    
+    fileprivate func autoSelecteYear() -> (Int, YearModel)? {
+        guard let selected = config.selecteDate, selecteDateNotHave() else { return nil }
+        for (YIndex, year) in dayDate.years.enumerated() where selected.year == year.year {
+            return (YIndex, year)
+        }
+        return nil
+    }
+    
+    fileprivate func autoSelecteMonth(year: YearModel) -> (Int, MonthModel)? {
+        guard let selected = config.selecteDate, selecteDateNotHave() else { return nil }
+        for (MIndex, month) in year.months.enumerated() where selected.month == month.month {
+            return (MIndex, month)
+        }
+        return nil
+    }
+    
+    fileprivate func autoSelecteDay(month: MonthModel) -> (Int, Int)? {
+        guard let selected = config.selecteDate, selecteDateNotHave() else { return nil }
+        for (DIndex, day) in month.days.enumerated() where selected.day == day {
+            return (DIndex, day)
+        }
+        return nil
+    }
+    
+    fileprivate func location(year: Int) {
+        selectRow(year, inComponent: 0, animated: config.selecteDateAnimation)
+        reloadComponent(1)
+    }
+    
+    fileprivate func location(month: Int) {
+        selectRow(month, inComponent: 1, animated: config.selecteDateAnimation)
+        if config.type == .DAY { reloadComponent(2) }
+    }
+    
+    fileprivate func location(day: Int) {
+        selectRow(day, inComponent: 2, animated: config.selecteDateAnimation)
+    }
+    
+    /// 定位
+    fileprivate func location(year: Int?, month: Int?, day: Int?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if let year = year { self.location(year: year) }
+            if let month = month { self.location(month: month) }
+            if let day = day {
+                self.location(day: day)
+                self.currentDayType()
+                self.periodDelegate(self, .DAY)
+            }else {
+                self.currentMonthType()
+                self.periodDelegate(self, .MONTH)
+            }
+        }
     }
     
     ///
@@ -69,54 +109,72 @@ class DayPickerView: BasePickerView {
         makeFiexdLable(subview: view, total: 3, index: 1, text: "月")
         makeFiexdLable(subview: view, total: 3, index: 2, text: "日")
     }()
+    
+    ///
+    override func calculationDate(start: Date, end: Date) {
+        dayDate.years.removeAll()
+        dayDate = years(start: start, end: end)
+        if config.order == .Desc { dayDate.years = dayDate.years.reversed() }
+        DispatchQueue.main.async {
+            self.reloadAllComponents()
+            if self.config.selecteDate != nil {
+                self.autoSeleteIndex()
+            }else {
+                if self.config.type == .DAY {
+                    self.currentDayType()
+                }else if self.config.type == .MONTH {
+                    self.currentMonthType()
+                }
+            }
+        }
+    }
 }
 
 extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 3
+        return config.componentNumber
     }
     
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return bounds.width / 3
+        return bounds.width / CGFloat(config.componentNumber)
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
-            return dayDate.count
+            return dayDate.years.count
         }else if component == 1 {
-            guard dayDate.count > pickerView.selectedRow(inComponent: 0) else { return 0 }
-            return dayDate[pickerView.selectedRow(inComponent: 0)].1.count
+            guard dayDate.years.count > selectedFrist else { return 0 }
+            return dayDate.years[selectedFrist].months.count
         }else {
-            guard dayDate.count > pickerView.selectedRow(inComponent: 0),
-                  dayDate[pickerView.selectedRow(inComponent: 0)].1.count > pickerView.selectedRow(inComponent: 1) else { return 0 }
-            return dayDate[pickerView.selectedRow(inComponent: 0)].1[pickerView.selectedRow(inComponent: 1)].1.count
+            guard dayDate.years.count > selectedFrist, dayDate.years[selectedFrist].months.count > selectedSecond else { return 0 }
+            return dayDate.years[selectedFrist].months[selectedSecond].days.count
         }
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
             pickerView.reloadComponent(1)
-            pickerView.reloadComponent(2)
-        }else if component == 1 {
+            if config.type == .DAY { pickerView.reloadComponent(2) }
+        }else if component == 1 && config.type == .DAY {
             pickerView.reloadComponent(2)
         }
         
         if isAllComponentContain() {
-            let yearArr = dayDate[selectedRow(inComponent: 0)]
-            let monthArr = yearArr.1[selectedRow(inComponent: 1)]
-            let day = monthArr.1[selectedRow(inComponent: 2)]
-            setCurrentPeriod((yearArr.0, monthArr.0, day), (yearArr.0, monthArr.0, day))
+            let yearArr = dayDate.years[selectedFrist]
+            let monthArr = yearArr.months[selectedSecond]
+            let day = monthArr.days[selectedThird]
+            setCurrentPeriod((yearArr.year, monthArr.month, day), (yearArr.year, monthArr.month, day))
         }
         periodDelegate(self, .DAY)
     }
     
     func isAllComponentContain() -> Bool {
-        let isContain = dayDate.count > selectedRow(inComponent: 0) &&
-            dayDate[selectedRow(inComponent: 0)].1.count > selectedRow(inComponent: 1) &&
-            dayDate[selectedRow(inComponent: 0)].1[selectedRow(inComponent: 1)].1.count > selectedRow(inComponent: 2)
+        let isContain = dayDate.years.count > selectedFrist &&
+            dayDate.years[selectedFrist].months.count > selectedSecond &&
+            dayDate.years[selectedFrist].months[selectedSecond].days.count > selectedThird
         // 在结尾时间时, 需要刷新数据.
-        if !isContain && dayDate[selectedRow(inComponent: 0)].1.count <= selectedRow(inComponent: 1) {
-            selectRow(dayDate[selectedRow(inComponent: 0)].1.count - 1, inComponent: 1, animated: true)
+        if !isContain && dayDate.years[selectedFrist].months.count <= selectedSecond {
+            selectRow(dayDate.years[selectedFrist].months.count - 1, inComponent: 1, animated: true)
             reloadComponent(2)
         }
         return isContain
@@ -144,79 +202,17 @@ extension DayPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         pickerLabel?.textColor = config.selectColor
         
         if component == 0 {
-            guard row < dayDate.count else { return pickerLabel! }
-            pickerLabel?.text = "\(dayDate[row].0)" + (config.showMode == .suffix ? "年" : "")
+            guard row < dayDate.years.count else { return pickerLabel! }
+            pickerLabel?.text = "\(dayDate.years[row].year)" + (config.showMode == .suffix ? "年" : "")
         }else if component == 1 {
-            let month = dayDate[pickerView.selectedRow(inComponent: 0)].1
+            let month = dayDate.years[selectedFrist].months
             guard row < month.count else { return pickerLabel! }
-            pickerLabel?.text = "\(month[row].0)" + (config.showMode == .suffix ? "月" : "")
+            pickerLabel?.text = "\(month[row].month)" + (config.showMode == .suffix ? "月" : "")
         }else if component == 2 {
-            let day = dayDate[pickerView.selectedRow(inComponent: 0)].1[pickerView.selectedRow(inComponent: 1)].1
+            let day = dayDate.years[selectedFrist].months[selectedSecond].days
             guard row < day.count else { return pickerLabel! }
             pickerLabel?.text = "\(day[row])" + (config.showMode == .suffix ? "日" : "")
         }
         return pickerLabel!
-    }
-}
-
-extension DayPickerView {
-    fileprivate func calculateDay(start: Date, end: Date) {
-        let period = TimePeriod(beginning: start, end: end)
-        if start.year == end.year {
-            if start.month == end.month {
-                if start.day == end.day {
-                    dayDate.append((start.year, [(start.month,[start.day])]))
-                }else if start.day < end.day {
-                    dayDate.append((start.year, [(start.month, Array(start.day...start.day + period.chunk.days))]))
-                }
-            }else if start.month < end.month {
-                dayDate.append((start.year, monthsAndDays(start: start, end: end)))
-            }
-        }else if start.year < end.year {
-            for tempYear in start.year...(start.year + period.chunk.years) {
-                if tempYear < end.year && tempYear > start.year {
-                    let startYear = Date.startOf(year: tempYear)
-                    let endYear = Date.endOf(year: tempYear)
-                    dayDate.append((tempYear, monthsAndDays(start: startYear, end: endYear)))
-                }else if tempYear == end.year {
-                    let startYear = Date.startOf(year: tempYear)
-                    dayDate.append((tempYear, monthsAndDays(start: startYear, end: end)))
-                }else if tempYear == start.year {
-                    let endYear = Date.endOf(year: tempYear)
-                    dayDate.append((tempYear, monthsAndDays(start: start, end: endYear)))
-                }
-            }
-        }
-        if config.order == .Desc { dayDate = dayDate.reversed() }
-        DispatchQueue.main.async {
-            self.reloadAllComponents()
-            if self.config.selecteDate != nil {
-                self.autoSeleteIndex()
-            }else {
-                self.currentDate()
-            }
-        }
-    }
-}
-
-extension BasePickerView {
-    func monthsAndDays(start: Date, end: Date) -> Array<(Int, Array<Int>)> {
-        var monthArr = Array<(Int, Array<Int>)>()
-        for tempMonth in start.month...(start.month + TimePeriod(beginning: start, end: end).chunk.months) {
-            if tempMonth < end.month && tempMonth > start.month {
-                let time = Date(year: start.year, month: tempMonth, day: 1)
-                monthArr.append((tempMonth, days(start: 1, end: time.daysInMonth)))
-            }else if tempMonth == end.month {
-                monthArr.append((tempMonth, days(start: 1, end: end.day)))
-            }else if tempMonth == start.month {
-                monthArr.append((tempMonth, days(start: start.day, end: start.daysInMonth)))
-            }
-        }
-        return config.order == .Desc ? monthArr.reversed() : monthArr
-    }
-    
-    fileprivate func days(start: Int, end: Int) -> Array<Int> {
-        let days = Array(start...end)
-        return config.order == .Desc ? days.reversed() : days
     }
 }

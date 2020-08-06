@@ -16,14 +16,7 @@ class WeekPickerView: BasePickerView {
         super.init(config: (config == nil ? SKPickerConfiguration(type: .WEEK) : config)!)
         delegate = self
         dataSource = self
-        calculateWeek()
-    }
-    
-    fileprivate func calculateWeek() {
-        DispatchQueue(label: "background", qos: .background).async {
-            self.weekData.removeAll()
-            self.calculateWeek(start: self.startTime, end: self.endTime)
-        }
+        reloadDate()
     }
     
     func currentDate() {
@@ -65,6 +58,37 @@ class WeekPickerView: BasePickerView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+    
+    override internal func calculationDate(start: Date, end: Date) {
+        let period = TimePeriod(beginning: start, end: end)
+        if start.year == end.year {
+            if period.weeks == 0 {
+                weekData.append((start.year, [((start.week), (start.year, start.month, start.day), (end.year, end.month, end.day))]))
+            }else {
+                weekData.append((start.year, weeks(start: start, end: end)))
+            }
+        }else if start.year < end.year {
+            for tempYear in start.year...(start.year + period.chunk.years) {
+                if tempYear < end.year && tempYear > start.year {
+                    weekData.append((tempYear, weeks(start: Date.startOf(year: tempYear), end: Date.endOf(year: tempYear))))
+                }else if tempYear == end.year {
+                    weekData.append((tempYear, weeks(start: Date.startOf(year: tempYear), end: end)))
+                }else if tempYear == start.year {
+                    weekData.append((tempYear, weeks(start: start, end: Date.endOf(year: tempYear))))
+                }
+            }
+        }
+        
+        if config.order == .Desc { weekData = weekData.reversed() }
+        DispatchQueue.main.async {
+            self.reloadAllComponents()
+            if self.config.selecteDate != nil {
+                self.autoSeleteIndex()
+            }else {
+                self.currentDate()
+            }
+        }
+    }
 }
 
 extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
@@ -96,9 +120,10 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
         pickerLabel?.textColor = config.selectColor
         
         if component == 0 {
+            guard weekData.count > row else { return pickerLabel! }
             pickerLabel?.text = "\(weekData[row].0)" + (config.showMode == .suffix ? "年" : "")
         }else {
-            guard weekData[pickerView.selectedRow(inComponent: 0)].1.count >= row else { return pickerLabel! }
+            guard weekData.count > pickerView.selectedRow(inComponent: 0) && weekData[pickerView.selectedRow(inComponent: 0)].1.count >= row else { return pickerLabel! }
             let weekSelcted = weekData[pickerView.selectedRow(inComponent: 0)].1[row]
             pickerLabel?.text = "第\(weekSelcted.0)周(\(weekSelcted.1.1.ddToDD()).\(weekSelcted.1.2.ddToDD())~\(weekSelcted.2.1.ddToDD()).\(weekSelcted.2.2.ddToDD()))"
         }
@@ -133,39 +158,10 @@ extension WeekPickerView: UIPickerViewDelegate, UIPickerViewDataSource {
             return "\(weekSelcted.0)(\(weekSelcted.1.0.ddToDD()).\(weekSelcted.1.1.ddToDD())~\(weekSelcted.2.0.ddToDD()).\(weekSelcted.2.1.ddToDD()))"
         }
     }
+    
 }
 
 extension WeekPickerView {
-    fileprivate func calculateWeek(start: Date, end: Date) {
-        let period = TimePeriod(beginning: start, end: end)
-        if start.year == end.year {
-            if period.weeks == 0 {
-                weekData.append((start.year, [((start.week), (start.year, start.month, start.day), (end.year, end.month, end.day))]))
-            }else {
-                weekData.append((start.year, weeks(start: start, end: end)))
-            }
-        }else if start.year < end.year {
-            for tempYear in start.year...(start.year + period.chunk.years) {
-                if tempYear < end.year && tempYear > start.year {
-                    weekData.append((tempYear, weeks(start: Date.startOf(year: tempYear), end: Date.endOf(year: tempYear))))
-                }else if tempYear == end.year {
-                    weekData.append((tempYear, weeks(start: Date.startOf(year: tempYear), end: end)))
-                }else if tempYear == start.year {
-                    weekData.append((tempYear, weeks(start: start, end: Date.endOf(year: tempYear))))
-                }
-            }
-        }
-        if config.order == .Desc { weekData = weekData.reversed() }
-        DispatchQueue.main.async {
-            self.reloadAllComponents()
-            if self.config.selecteDate != nil {
-                self.autoSeleteIndex()
-            }else {
-                self.currentDate()
-            }
-        }
-    }
-    
     fileprivate func weeks(start: Date, end: Date) -> Array<(Int, (Int, Int, Int), (Int, Int, Int))> {
         let timePeriod = TimePeriod(beginning: start, end: end)
         let integerStartDay: Int = 7 - start.week

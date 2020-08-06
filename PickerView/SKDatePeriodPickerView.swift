@@ -6,6 +6,17 @@
 //  Copyright © 2019 jetson. All rights reserved.
 
 import UIKit
+
+struct PeriodTime {
+    var start: Date
+    var end: Date
+    
+    init(start: Date, end: Date) {
+        self.start = start
+        self.end = end
+    }
+}
+
 /// (Int, Int, Int) (年，月，日)
 typealias SKPeriodDate = (Int, Int, Int)
 
@@ -23,9 +34,7 @@ class SKDatePeriodPickerView: UIView {
     
     /// 主要页面高度
     public var mainViewHeight: CGFloat = 40 + bottomSafeArea + 216 {
-        willSet {
-            mainViewHeightConstraint.constant = newValue
-        }
+        willSet { mainViewHeightConstraint.constant = newValue }
     }
     
     /// 主要页面颜色
@@ -57,20 +66,40 @@ class SKDatePeriodPickerView: UIView {
     public var scrollSwitchAnimation: Bool = true
     /// 是否适配暗黑模式, 默认是
     public var isAdaptiveDrakMode: Bool = true
-    /// 周期开始时间
-    public var periodStartTime: Date?
-    /// 周期结束时间
-    public var periodEndTime: Date?
+    /// 周期时间
+    public var periodTime: PeriodTime = PeriodTime(start: Date(), end: Date()) {
+        didSet {
+            for item in pickerArr {
+                guard let pickerView = item.pickerView as? BasePickerView else { return }
+                pickerView.config.setTimeLimit(periodTime.start, periodTime.end)
+                pickerView.reloadDate()
+            }
+        }
+    }
     /// 自定义工具栏
     public var customerToolView: SKToolView?
     /// 显示模式
     public var showMode: SKPickerMode = .popup
     ///pickerView数组
     public var periodArrTypes: Array<SKPeriodType>!
-    ///toolView配置信息
-    public var toolViewConfigration: SKToolViewConfiguration!
+//    ///picker类型
+//    public var periodArrTypes: Array<SKPeriodType> {
+//        get {
+//            return pickerArr.map{ $0.type }
+//        }
+//    }
+    
     /// pickerView配置信息
-    public var pickerArrConfiguration: Array<SKPickerConfiguration>!
+    public var pickerArrConfiguration = Array<SKPickerConfiguration>()
+//    /// pickerView配置信息
+//    public var pickerArrConfiguration: Array<SKPickerConfiguration> {
+//        get {
+//            return pickerArr.map{ ($0.pickerView as! BasePickerView).config }
+//        }
+//    }
+    
+    ///toolView配置信息
+    public var toolViewConfigration = SKToolViewConfiguration()
     /// 当前选中的时间, 用于缓存
     private(set) var currentPeriodDate: ((Int, Int, Int),(Int, Int, Int))? = nil {
         didSet {
@@ -79,9 +108,10 @@ class SKDatePeriodPickerView: UIView {
             }
         }
     }
+    
     ///
     private var mainViewBottomConstraint: NSLayoutConstraint!
-    
+    ///
     private var mainViewHeightConstraint: NSLayoutConstraint!
     ///
     private(set) var toolView: SKToolView!
@@ -111,14 +141,17 @@ class SKDatePeriodPickerView: UIView {
                 mode: SKPickerMode = .popup,
                 toolConfig toolConfigration: SKToolViewConfiguration? = nil,
                 pickerConfig pickerConfiguration: Array<SKPickerConfiguration>? = nil) {
-        guard let frame = (frame == nil ? shadeFrame : frame) else { super.init(frame: .zero);return }
+        guard let frame = (frame == nil ? shadeFrame : frame) else {
+            super.init(frame: .zero);
+            return
+        }
+        
         super.init(frame: frame)
         
         toolView = toolView(types: types, config: toolConfigration)
         
         periodArrTypes = types
         toolViewConfigration = toolConfigration ?? SKToolViewConfiguration()
-        pickerArrConfiguration = makeConfiguration(types: periodArrTypes)
         
         backgroundColor = shadeBackground
         isUserInteractionEnabled = true
@@ -127,21 +160,47 @@ class SKDatePeriodPickerView: UIView {
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissEvent)))
         mainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noEvent)))
+        
+        addView()
+    }
+    
+    func addView() {
+        if pickerArrConfiguration.count == periodArrTypes.count  {
+            makePickerView(types: periodArrTypes, config: pickerArrConfiguration)
+        }else if pickerArrConfiguration.count == 0 {
+            pickerArrConfiguration = makeConfiguration(types: periodArrTypes)
+            makePickerView(types: periodArrTypes, config: pickerArrConfiguration)
+        }
+        
+        if showMode == .customer {
+            addSubview(scroll)
+            scrollAddConstrains()
+        }else {
+            addSubview(mainView)
+            mainViewAddConstrains()
+            
+            mainView.addSubview(toolView)
+            toolViewAddConstrains()
+            
+            mainView.addSubview(scroll)
+            scrollToMainViewAddConstrains()
+        }
+        pickerViewAddScroll()
     }
     
     @objc func onDeviceOrientationDidChange() {
         switch UIDevice.current.orientation {
         case .portrait:
             scroll.contentSize = CGSize(width: scroll.bounds.width * CGFloat(pickerArr.count), height: 216)
-//            for (index, item) in pickerArr.enumerated() where item.isSelected {
-//                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
-//            }
+            for (index, item) in pickerArr.enumerated() where item.isSelected {
+                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
+            }
             mainViewHeight = 40 + bottomSafeArea + 216
         case .landscapeLeft, .landscapeRight:
             scroll.contentSize = CGSize(width: scroll.bounds.width * CGFloat(pickerArr.count), height: 162)
-//            for (index, item) in pickerArr.enumerated() where item.isSelected {
-//                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
-//            }
+            for (index, item) in pickerArr.enumerated() where item.isSelected {
+                scroll.contentOffset = CGPoint(x: Int(bounds.width) * index, y: 0)
+            }
             mainViewHeight = 40 + bottomSafeArea + 162
         default: break
         }
@@ -211,6 +270,7 @@ class SKDatePeriodPickerView: UIView {
     }
     
     @objc func noEvent() {}
+    
     ///
     func makePickerView(types: Array<SKPeriodType>, config: Array<SKPickerConfiguration>?) {
         scroll.contentSize = CGSize(width: bounds.width * CGFloat(types.count), height: 216)
@@ -220,33 +280,33 @@ class SKDatePeriodPickerView: UIView {
             let config = config == nil ? nil : config![index]
             let isSelecte = selectedIndex == index
             switch item {
-            case .DAY:
-                pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(config: config), isSelected: isSelecte))
-            case .WEEK:
-                pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(config: config),isSelected: isSelecte))
-            case .MONTH:
-                pickerArr.append(PickerViewModel(type: .MONTH, picker: monthPickerView(config: config), isSelected: isSelecte))
+            case .DAY: pickerArr.append(PickerViewModel(type: .DAY, picker: dayPickerView(config: config), isSelected: isSelecte))
+            case .WEEK: pickerArr.append(PickerViewModel(type: .WEEK, picker: weekPickerView(config: config),isSelected: isSelecte))
+            case .MONTH: pickerArr.append(PickerViewModel(type: .MONTH, picker: dayPickerView(config: config), isSelected: isSelecte))
             }
         }
     }
     
     ///
+    func makeSKPickerConfiguration(config: SKPickerConfiguration?, type: SKPeriodType) -> SKPickerConfiguration? {
+        var configuration = config
+        if configuration == nil && (periodTime.start != Date() && periodTime.end != Date()) {
+            configuration = SKPickerConfiguration(type: type)
+            configuration?.timeLimit = (periodTime.start, periodTime.end)
+        }
+        return configuration
+    }
+    
+    ///
     func dayPickerView(config: SKPickerConfiguration?) -> DayPickerView {
-        let pickerView = DayPickerView(config: config)
+        let pickerView = DayPickerView(config: makeSKPickerConfiguration(config: config, type: .DAY))
         pickerView.periodDelegate = self
         return pickerView
     }
     
     ///
     func weekPickerView(config: SKPickerConfiguration?) -> WeekPickerView {
-        let pickerView = WeekPickerView(config: config)
-        pickerView.periodDelegate = self
-        return pickerView
-    }
-    
-    ///
-    func monthPickerView(config: SKPickerConfiguration?) -> MonthPickerView {
-        let pickerView = MonthPickerView(config: config)
+        let pickerView = WeekPickerView(config: makeSKPickerConfiguration(config: config, type: .WEEK))
         pickerView.periodDelegate = self
         return pickerView
     }
@@ -260,6 +320,7 @@ class SKDatePeriodPickerView: UIView {
         }
     }
     
+    ///
     func pickerViewAddConstraints(lastPickerView: UIPickerView?, pickerView: UIPickerView) {
         pickerView.translatesAutoresizingMaskIntoConstraints = false
         scroll.addConstraints([NSLayoutConstraint(item: pickerView, attribute: .top, relatedBy: .equal, toItem: scroll, attribute: .top, multiplier: 1.0, constant: 0),
@@ -295,41 +356,9 @@ class SKDatePeriodPickerView: UIView {
     }
     
     ///
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addView()
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        addView()
-    }
-    
-    
-    func addView() {
-        
-        if pickerArrConfiguration.count > 0 {
-            makePickerView(types: periodArrTypes, config: makeConfiguration(types: periodArrTypes))
-        }else {
-            makePickerView(types: periodArrTypes, config: pickerArrConfiguration)
-        }
-        
-        
-        if showMode == .customer {
-            addSubview(scroll)
-            scrollAddConstrains()
-        }else {
-            addSubview(mainView)
-            mainViewAddConstrains()
-            
-            mainView.addSubview(toolView)
-            toolViewAddConstrains()
-            
-            mainView.addSubview(scroll)
-            scrollToMainViewAddConstrains()
-        }
-        
-        pickerViewAddScroll()
+        animationedShow()
     }
     
     ///
@@ -395,10 +424,12 @@ extension SKDatePeriodPickerView:UIScrollViewDelegate, SKToolViewProtocol, SKDat
         }
     }
     
+    ///
     func hidenTimePeriod() {
         animationedHiden()
     }
     
+    ///
     func selectePickerView(selected type: SKPeriodType, selected index: Int) {
         if scrollSwitchAnimation {
             UIView.animate(withDuration: 0.3) { self.scrollOffSet(index) }
